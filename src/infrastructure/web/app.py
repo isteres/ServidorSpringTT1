@@ -1,23 +1,33 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Path
+from typing import List
+from domain.entities.models import Entity, SimulationRequest, SimulationResult
+from application.use_cases.simulation_service import SimulationService
+from infrastructure.adapters.in_memory_repository import InMemorySimulationRepository
 
-def create_app() -> FastAPI:
-    """
-    Factory function to create and configure the FastAPI application.
-    """
-    app = FastAPI(
-        title="Hexagonal FastAPI",
-        description="A REST API following Hexagonal Architecture",
-        version="1.0.0"
-    )
+app = FastAPI(title="Servidor de Simulación Hexagonal")
 
-    # Health check endpoint
-    @app.get("/health", tags=["System"])
-    def health_check():
-        return {"status": "ok", "message": "Service is running"}
+# Inyección de dependencias manual por simplicidad
+repository = InMemorySimulationRepository()
+service = SimulationService(repository)
 
-    # TODO: Include routers from src.infrastructure.web.controllers here
-    # app.include_router(some_router)
+@app.post("/simulation/solicitar", response_model=int)
+def solicitar_simulacion(sol: SimulationRequest):
+    try:
+        return service.solicitar_simulacion(sol)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-    return app
+@app.get("/simulation/descargar/{ticket}", response_model=SimulationResult)
+def descargar_datos(ticket: int = Path(..., description="Ticket de simulación")):
+    data = service.descargar_datos(ticket)
+    if not data:
+        raise HTTPException(status_code=404, detail="Simulación no encontrada")
+    return data
 
-app = create_app()
+@app.get("/entities", response_model=List[Entity])
+def get_entities():
+    return service.get_entities()
+
+@app.get("/entities/validate/{entity_id}", response_model=bool)
+def is_valid_entity_id(entity_id: int):
+    return service.is_valid_entity_id(entity_id)
