@@ -1,5 +1,5 @@
 import random
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Set, Tuple
 from application.ports.input.simulation_use_case import SimulationUseCase
 from application.ports.output.simulation_repository import SimulationRepository
 from domain.entities.models import Entidad, DatosSolicitud, DatosSimulation, Punto
@@ -13,15 +13,15 @@ class SimulationService(SimulationUseCase):
         max_t = 10
         puntos_por_tiempo: Dict[int, List[Punto]] = {}
         
-        # Inicializamos posiciones para cada entidad solicitada
-        # Guardamos el estado actual de las entidades para moverlas en el tiempo
-        entidades_estado = []
+        # Estado inicial de la simulación
+        entidades_en_escena = []
         for ent_id, cantidad in sol.nums.items():
-            if not self.is_valid_entity_id(ent_id):
+            entidad_base = self.repository.get_entity(ent_id)
+            if not entidad_base:
                 continue
             for _ in range(cantidad):
-                entidades_estado.append({
-                    "id": ent_id,
+                entidades_en_escena.append({
+                    "entidad": entidad_base,
                     "x": random.randint(0, ancho - 1),
                     "y": random.randint(0, ancho - 1),
                     "color": self._get_color(ent_id)
@@ -29,18 +29,48 @@ class SimulationService(SimulationUseCase):
 
         # Generamos la evolución temporal (10 pasos)
         for t in range(max_t):
-            lista_puntos = []
-            for ent in entidades_estado:
-                # Movimiento aleatorio simple (-1, 0, 1) manteniéndose en el tablero
-                ent["x"] = max(0, min(ancho - 1, ent["x"] + random.randint(-1, 1)))
-                ent["y"] = max(0, min(ancho - 1, ent["y"] + random.randint(-1, 1)))
+            lista_puntos_actuales = []
+            nuevas_entidades_en_escena = []
+            
+            # Calculamos posiciones ocupadas por cada raza al inicio del turno
+            ocupadas_por_raza: Dict[int, Set[Tuple[int, int]]] = {}
+            for e in entidades_en_escena:
+                eid = e["entidad"].id
+                if eid not in ocupadas_por_raza:
+                    ocupadas_por_raza[eid] = set()
+                ocupadas_por_raza[eid].add((e["x"], e["y"]))
+
+            for estado in entidades_en_escena:
+                entidad = estado["entidad"]
+                eid = entidad.id
                 
-                lista_puntos.append(Punto(
-                    x=ent["x"],
-                    y=ent["y"],
-                    color=ent["color"]
-                ))
-            puntos_por_tiempo[t] = lista_puntos
+                # Delegamos el comportamiento pasando las posiciones ocupadas por su propia raza
+                # para que los clones se creen en celdas vacías
+                nuevas_posiciones = entidad.mover(estado["x"], estado["y"], ancho, ocupadas_por_raza.get(eid, set()))
+                
+                for nx, ny in nuevas_posiciones:
+                    # Registramos el nuevo punto en el conjunto de ocupadas para evitar solapamientos
+                    # de clones generados en este mismo paso temporal por otros individuos
+                    if eid not in ocupadas_por_raza:
+                        ocupadas_por_raza[eid] = set()
+                    ocupadas_por_raza[eid].add((nx, ny))
+                    
+                    # Actualizamos el estado para el próximo paso temporal
+                    nuevas_entidades_en_escena.append({
+                        "entidad": entidad,
+                        "x": nx,
+                        "y": ny,
+                        "color": estado["color"]
+                    })
+                    # Guardamos el punto para la visualización en este instante t
+                    lista_puntos_actuales.append(Punto(
+                        x=nx,
+                        y=ny,
+                        color=estado["color"]
+                    ))
+            
+            puntos_por_tiempo[t] = lista_puntos_actuales
+            entidades_en_escena = nuevas_entidades_en_escena
 
         ticket = random.randint(1000, 9999)
         resultado = DatosSimulation(
@@ -61,6 +91,5 @@ class SimulationService(SimulationUseCase):
         return self.repository.get_entity(entity_id) is not None
 
     def _get_color(self, ent_id: int) -> str:
-        # Colores básicos para distinguir entidades en el mapa
         colors = {1: "#FF5733", 2: "#33FF57", 3: "#3357FF"}
         return colors.get(ent_id, "#888888")

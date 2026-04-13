@@ -1,14 +1,28 @@
 from typing import List, Optional, Dict
 from application.ports.output.simulation_repository import SimulationRepository
-from domain.entities.models import Entidad, DatosSimulation
+from domain.entities.models import (
+    Entidad, EntidadEstatica, EntidadMovimientoAdyacente, EntidadEstáticaClon, DatosSimulation
+)
 
 class InMemorySimulationRepository(SimulationRepository):
     def __init__(self):
-        # Entidades iniciales alineadas con el cliente (ID 1, 2, 3)
+        # Entidades iniciales instanciadas con sus comportamientos concretos
         self.entities = {
-            1: Entidad(id=1, name="Parámetro 1", descripcion="Controlan la temperatura ambiental."),
-            2: Entidad(id=2, name="Parámetro 2", descripcion="Miden el nivel de humedad en el aire."),
-            3: Entidad(id=3, name="Parámetro 3", descripcion="Sistemas de vigilancia por video.")
+            1: EntidadEstatica(
+                id=1, 
+                name="Entidad Estática", 
+                descripcion="Mantiene sus puntos quietos en todo el tiempo."
+            ),
+            2: EntidadMovimientoAdyacente(
+                id=2, 
+                name="Entidad Movimiento Adyacente", 
+                descripcion="Mueve sus puntos únicamente a posiciones adyacentes."
+            ),
+            3: EntidadEstáticaClon(
+                id=3, 
+                name="Entidad Estática Clon", 
+                descripcion="Se mantiene quieta pero con probabilidad de clonarse."
+            )
         }
         self.simulations: Dict[int, DatosSimulation] = {}
 
