@@ -1,20 +1,20 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
-from domain.entities.models import Entity, SimulationResult
+from domain.entities.models import Entidad, DatosSimulation
 
 class SimulationRepository(ABC):
     @abstractmethod
-    def save_simulation(self, result: SimulationResult) -> int:
+    def save_simulation(self, ticket: int, result: DatosSimulation) -> int:
         pass
 
     @abstractmethod
-    def get_simulation(self, ticket: int) -> Optional[SimulationResult]:
+    def get_simulation(self, ticket: int) -> Optional[DatosSimulation]:
         pass
 
     @abstractmethod
-    def get_entities(self) -> List[Entity]:
+    def get_entities(self) -> List[Entidad]:
         pass
 
     @abstractmethod
-    def get_entity(self, entity_id: int) -> Optional[Entity]:
+    def get_entity(self, entity_id: int) -> Optional[Entidad]:
         pass

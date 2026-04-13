@@ -1,26 +1,26 @@
 from typing import List, Optional, Dict
 from application.ports.output.simulation_repository import SimulationRepository
-from domain.entities.models import Entity, SimulationResult
+from domain.entities.models import Entidad, DatosSimulation
 
 class InMemorySimulationRepository(SimulationRepository):
     def __init__(self):
-        # Entidades iniciales
+        # Entidades iniciales alineadas con el cliente (ID 1, 2, 3)
         self.entities = {
-            1: Entity(id=1, name="Entidad 1 (Estática)", initial_quantity=100.0),
-            2: Entity(id=2, name="Entidad 2 (Estática)", initial_quantity=200.0),
-            3: Entity(id=3, name="Entidad 3 (Dinámica)", initial_quantity=50.0)
+            1: Entidad(id=1, name="Parámetro 1", descripcion="Controlan la temperatura ambiental."),
+            2: Entidad(id=2, name="Parámetro 2", descripcion="Miden el nivel de humedad en el aire."),
+            3: Entidad(id=3, name="Parámetro 3", descripcion="Sistemas de vigilancia por video.")
         }
-        self.simulations: Dict[int, SimulationResult] = {}
+        self.simulations: Dict[int, DatosSimulation] = {}
 
-    def save_simulation(self, result: SimulationResult) -> int:
-        self.simulations[result.ticket] = result
-        return result.ticket
+    def save_simulation(self, ticket: int, result: DatosSimulation) -> int:
+        self.simulations[ticket] = result
+        return ticket
 
-    def get_simulation(self, ticket: int) -> Optional[SimulationResult]:
+    def get_simulation(self, ticket: int) -> Optional[DatosSimulation]:
         return self.simulations.get(ticket)
 
-    def get_entities(self) -> List[Entity]:
+    def get_entities(self) -> List[Entidad]:
         return list(self.entities.values())
 
-    def get_entity(self, entity_id: int) -> Optional[Entity]:
+    def get_entity(self, entity_id: int) -> Optional[Entidad]:
         return self.entities.get(entity_id)
