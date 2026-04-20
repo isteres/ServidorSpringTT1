@@ -1,5 +1,9 @@
 # Servidor de Simulación Hexagonal (TT1)
 
+[![Python Tests](https://github.com/isteres/ServidorSpringTT1/actions/workflows/python-tests.yml/badge.svg)](https://github.com/isteres/ServidorSpringTT1/actions/workflows/python-tests.yml)
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/)
+
 Este proyecto es un motor de simulación para la evolución de entidades en un tablero bidimensional. Está desarrollado siguiendo los principios de Clean Architecture y Arquitectura Hexagonal para garantizar un sistema desacoplado y fácil de testear.
 
 ## Arquitectura del Proyecto
