@@ -13,6 +13,20 @@ from application.use_cases.simulation_service import SimulationService
 from infrastructure.adapters.in_memory_repository import InMemorySimulationRepository
 from domain.entities.models import DatosSolicitud
 
+def test_simulation_t0_is_initial_state():
+    """Verifica que en t=0 no hay clones ni movimientos, solo lo solicitado."""
+    repo = InMemorySimulationRepository()
+    service = SimulationService(repo)
+    
+    # 10 estáticas, 10 móviles, 10 clonadoras
+    solicitud = DatosSolicitud(nums={1: 10, 2: 10, 3: 10})
+    
+    ticket = service.solicitar_simulacion(solicitud)
+    datos = service.descargar_datos(ticket)
+    
+    # En t=0 debe haber exactamente 30 puntos
+    assert len(datos.puntos[0]) == 30
+
 def test_simulation_no_overlap_integration():
     """
     Test de integración que verifica que en ningún paso de tiempo 

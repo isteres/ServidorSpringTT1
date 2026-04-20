@@ -34,8 +34,14 @@ class SimulationService(SimulationUseCase):
                     })
                     pos_idx += 1
 
-        # Generamos la evolución temporal (10 pasos)
-        for t in range(max_t):
+        # T=0: Guardamos el estado inicial exacto (sin movimientos ni clones)
+        puntos_por_tiempo[0] = [
+            Punto(x=e["x"], y=e["y"], color=e["color"]) 
+            for e in entidades_en_escena
+        ]
+
+        # Generamos la evolución temporal para los siguientes pasos (de 1 a max_t-1)
+        for t in range(1, max_t):
             lista_puntos_actuales = []
             nuevas_entidades_en_escena = []
             
@@ -49,16 +55,10 @@ class SimulationService(SimulationUseCase):
             for estado in entidades_en_escena:
                 entidad = estado["entidad"]
                 
-                # Una entidad puede moverse a una casilla si:
-                # 1. No está reservada ya para el próximo paso por otra entidad.
-                # 2. No está ocupada actualmente por otra entidad que aún no se ha movido.
-                # Excepción: Su propia casilla actual siempre se considera disponible para ella.
                 ocupadas_para_mi = (ocupadas_actuales | ocupadas_proximas) - {(estado["x"], estado["y"])}
-                
                 nuevas_posiciones = entidad.mover(estado["x"], estado["y"], ancho, ocupadas_para_mi)
                 
                 if nuevas_posiciones:
-                    # Marcamos su posición antigua como ya no "actual" y las nuevas como "próximas"
                     ocupadas_actuales.discard((estado["x"], estado["y"]))
                     for nx, ny in nuevas_posiciones:
                         ocupadas_proximas.add((nx, ny))
