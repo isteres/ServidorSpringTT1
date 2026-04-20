@@ -63,7 +63,9 @@ class EntidadEstáticaClon(EntidadEstatica):
             # Buscamos una casilla vacía aleatoriamente (máximo 10 intentos para eficiencia)
             for _ in range(10):
                 nx, ny = random.randint(0, ancho - 1), random.randint(0, ancho - 1)
-                if (nx, ny) not in ocupadas:
+                # El clon no puede estar en la misma casilla que el original 
+                # ni en una casilla ocupada por otros
+                if (nx, ny) != (x, y) and (nx, ny) not in ocupadas:
                     posiciones.append((nx, ny))
                     break
         return posiciones

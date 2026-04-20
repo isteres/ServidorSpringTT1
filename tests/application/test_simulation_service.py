@@ -10,13 +10,13 @@ if src_dir not in sys.path:
     sys.path.insert(0, src_dir)
 
 from application.use_cases.simulation_service import SimulationService
-from domain.entities.models import DatosSolicitud, Entidad
+from domain.entities.models import DatosSolicitud, EntidadEstatica
 
 @pytest.fixture
 def mock_repo():
     repo = MagicMock()
     # Mock de entidades existentes (IDs 1, 2)
-    repo.get_entity.side_effect = lambda eid: Entidad(id=eid, name="Test", descripcion="Desc") if eid in [1, 2] else None
+    repo.get_entity.side_effect = lambda eid: EntidadEstatica(id=eid, name="Test", descripcion="Desc") if eid in [1, 2] else None
     repo.save_simulation.return_value = 1234
     return repo
 

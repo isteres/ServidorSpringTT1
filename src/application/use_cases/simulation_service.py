@@ -13,19 +13,26 @@ class SimulationService(SimulationUseCase):
         max_t = 10
         puntos_por_tiempo: Dict[int, List[Punto]] = {}
         
-        # Estado inicial de la simulación
+        # Estado inicial de la simulación: obtener todas las posiciones posibles y mezclarlas
+        todas_posiciones = [(x, y) for x in range(ancho) for y in range(ancho)]
+        random.shuffle(todas_posiciones)
+        pos_idx = 0
+
         entidades_en_escena = []
         for ent_id, cantidad in sol.nums.items():
             entidad_base = self.repository.get_entity(ent_id)
             if not entidad_base:
                 continue
             for _ in range(cantidad):
-                entidades_en_escena.append({
-                    "entidad": entidad_base,
-                    "x": random.randint(0, ancho - 1),
-                    "y": random.randint(0, ancho - 1),
-                    "color": self._get_color(ent_id)
-                })
+                if pos_idx < len(todas_posiciones):
+                    x, y = todas_posiciones[pos_idx]
+                    entidades_en_escena.append({
+                        "entidad": entidad_base,
+                        "x": x,
+                        "y": y,
+                        "color": self._get_color(ent_id)
+                    })
+                    pos_idx += 1
 
         # Generamos la evolución temporal (10 pasos)
         for t in range(max_t):
@@ -35,37 +42,33 @@ class SimulationService(SimulationUseCase):
             # Mezclamos para que el orden sea aleatorio cada turno (FCFS justo)
             random.shuffle(entidades_en_escena)
             
-            # Set de ocupación para el PRÓXIMO instante (t+1)
-            # Empezamos con el mapa actual, pero lo actualizaremos dinámicamente
-            ocupadas_al_inicio = set((e["x"], e["y"]) for e in entidades_en_escena)
+            # Tracking de ocupación
+            ocupadas_proximas = set()
+            ocupadas_actuales = set((e["x"], e["y"]) for e in entidades_en_escena)
 
             for estado in entidades_en_escena:
                 entidad = estado["entidad"]
-                eid = entidad.id
                 
-                # Para decidir movimiento, pasamos el estado actual de ocupación
-                # Una entidad PUEDE quedarse en su propia casilla (x,y),
-                # por lo que quitamos su casilla actual de 'ocupadas' temporalmente
-                # para que el método 'mover' sepa que su sitio está garantizado
-                ocupadas_sin_mi = ocupadas_al_inicio - {(estado["x"], estado["y"])}
+                # Una entidad puede moverse a una casilla si:
+                # 1. No está reservada ya para el próximo paso por otra entidad.
+                # 2. No está ocupada actualmente por otra entidad que aún no se ha movido.
+                # Excepción: Su propia casilla actual siempre se considera disponible para ella.
+                ocupadas_para_mi = (ocupadas_actuales | ocupadas_proximas) - {(estado["x"], estado["y"])}
                 
-                nuevas_posiciones = entidad.mover(estado["x"], estado["y"], ancho, ocupadas_sin_mi)
+                nuevas_posiciones = entidad.mover(estado["x"], estado["y"], ancho, ocupadas_para_mi)
                 
-                # Actualizamos ocupación global basándonos en el resultado del movimiento
                 if nuevas_posiciones:
-                    # Liberamos la posición antigua y reservamos la(s) nueva(s)
-                    ocupadas_al_inicio.discard((estado["x"], estado["y"]))
+                    # Marcamos su posición antigua como ya no "actual" y las nuevas como "próximas"
+                    ocupadas_actuales.discard((estado["x"], estado["y"]))
                     for nx, ny in nuevas_posiciones:
-                        ocupadas_al_inicio.add((nx, ny))
+                        ocupadas_proximas.add((nx, ny))
                         
-                        # Guardamos el estado para el próximo paso temporal
                         nuevas_entidades_en_escena.append({
                             "entidad": entidad,
                             "x": nx,
                             "y": ny,
                             "color": estado["color"]
                         })
-                        # Guardamos el punto para la visualización
                         lista_puntos_actuales.append(Punto(x=nx, y=ny, color=estado["color"]))
             
             puntos_por_tiempo[t] = lista_puntos_actuales
