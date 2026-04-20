@@ -35,26 +35,37 @@ class EntidadMovimientoAdyacente(Entidad):
     def mover(
         self, x: int, y: int, ancho: int, ocupadas: Set[Tuple[int, int]]
     ) -> List[Tuple[int, int]]:
-        # Movimiento a posiciones adyacentes (-1, 0, 1)
-        nx = max(0, min(ancho - 1, x + random.randint(-1, 1)))
-        ny = max(0, min(ancho - 1, y + random.randint(-1, 1)))
-        return [(nx, ny)]
+        # Intentamos movernos a una posición adyacente libre (solo H/V)
+        direcciones = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        random.shuffle(direcciones)
+
+
+        for dx, dy in direcciones:
+            nx, ny = x + dx, y + dy
+            # Verificar límites y si está libre
+            if 0 <= nx < ancho and 0 <= ny < ancho:
+                if (nx, ny) not in ocupadas:
+                    return [(nx, ny)]  # Éxito: se mueve a nueva casilla
+
+        # Fallback: Si no puede moverse a ninguna, se queda donde está (garantizado)
+        return [(x, y)]
 
 
 class EntidadEstáticaClon(EntidadEstatica):
     def mover(
         self, x: int, y: int, ancho: int, ocupadas: Set[Tuple[int, int]]
     ) -> List[Tuple[int, int]]:
-        posiciones = super().mover(x, y, ancho, ocupadas)
-        # Probabilidad de clonar (ej: 10% por paso de tiempo)
-        if random.random() < 0.1:
-            # Buscar una posición del tablero que no esté ocupada por su misma raza
-            posibles_vacias = (
-                set((i, j) for i in range(ancho) for j in range(ancho)) - ocupadas
-            )
-            if posibles_vacias:
-                nx, ny = random.choice(list(posibles_vacias))
-                posiciones.append((nx, ny))
+        # La entidad original siempre se queda en su sitio (garantizado)
+        posiciones = [(x, y)]
+
+        # Intento de clonación
+        if random.random() < 0.5:
+            # Buscamos una casilla vacía aleatoriamente (máximo 10 intentos para eficiencia)
+            for _ in range(10):
+                nx, ny = random.randint(0, ancho - 1), random.randint(0, ancho - 1)
+                if (nx, ny) not in ocupadas:
+                    posiciones.append((nx, ny))
+                    break
         return posiciones
 
 

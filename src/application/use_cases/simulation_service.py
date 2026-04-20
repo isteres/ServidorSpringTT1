@@ -32,42 +32,41 @@ class SimulationService(SimulationUseCase):
             lista_puntos_actuales = []
             nuevas_entidades_en_escena = []
             
-            # Calculamos posiciones ocupadas por cada raza al inicio del turno
-            ocupadas_por_raza: Dict[int, Set[Tuple[int, int]]] = {}
-            for e in entidades_en_escena:
-                eid = e["entidad"].id
-                if eid not in ocupadas_por_raza:
-                    ocupadas_por_raza[eid] = set()
-                ocupadas_por_raza[eid].add((e["x"], e["y"]))
+            # Mezclamos para que el orden sea aleatorio cada turno (FCFS justo)
+            random.shuffle(entidades_en_escena)
+            
+            # Set de ocupación para el PRÓXIMO instante (t+1)
+            # Empezamos con el mapa actual, pero lo actualizaremos dinámicamente
+            ocupadas_al_inicio = set((e["x"], e["y"]) for e in entidades_en_escena)
 
             for estado in entidades_en_escena:
                 entidad = estado["entidad"]
                 eid = entidad.id
                 
-                # Delegamos el comportamiento pasando las posiciones ocupadas por su propia raza
-                # para que los clones se creen en celdas vacías
-                nuevas_posiciones = entidad.mover(estado["x"], estado["y"], ancho, ocupadas_por_raza.get(eid, set()))
+                # Para decidir movimiento, pasamos el estado actual de ocupación
+                # Una entidad PUEDE quedarse en su propia casilla (x,y),
+                # por lo que quitamos su casilla actual de 'ocupadas' temporalmente
+                # para que el método 'mover' sepa que su sitio está garantizado
+                ocupadas_sin_mi = ocupadas_al_inicio - {(estado["x"], estado["y"])}
                 
-                for nx, ny in nuevas_posiciones:
-                    # Registramos el nuevo punto en el conjunto de ocupadas para evitar solapamientos
-                    # de clones generados en este mismo paso temporal por otros individuos
-                    if eid not in ocupadas_por_raza:
-                        ocupadas_por_raza[eid] = set()
-                    ocupadas_por_raza[eid].add((nx, ny))
-                    
-                    # Actualizamos el estado para el próximo paso temporal
-                    nuevas_entidades_en_escena.append({
-                        "entidad": entidad,
-                        "x": nx,
-                        "y": ny,
-                        "color": estado["color"]
-                    })
-                    # Guardamos el punto para la visualización en este instante t
-                    lista_puntos_actuales.append(Punto(
-                        x=nx,
-                        y=ny,
-                        color=estado["color"]
-                    ))
+                nuevas_posiciones = entidad.mover(estado["x"], estado["y"], ancho, ocupadas_sin_mi)
+                
+                # Actualizamos ocupación global basándonos en el resultado del movimiento
+                if nuevas_posiciones:
+                    # Liberamos la posición antigua y reservamos la(s) nueva(s)
+                    ocupadas_al_inicio.discard((estado["x"], estado["y"]))
+                    for nx, ny in nuevas_posiciones:
+                        ocupadas_al_inicio.add((nx, ny))
+                        
+                        # Guardamos el estado para el próximo paso temporal
+                        nuevas_entidades_en_escena.append({
+                            "entidad": entidad,
+                            "x": nx,
+                            "y": ny,
+                            "color": estado["color"]
+                        })
+                        # Guardamos el punto para la visualización
+                        lista_puntos_actuales.append(Punto(x=nx, y=ny, color=estado["color"]))
             
             puntos_por_tiempo[t] = lista_puntos_actuales
             entidades_en_escena = nuevas_entidades_en_escena
