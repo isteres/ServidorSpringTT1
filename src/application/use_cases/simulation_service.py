@@ -54,12 +54,13 @@ class SimulationService(SimulationUseCase):
         for t in range(1, max_t):
             lista_puntos_actuales = []
             nuevas_entidades_en_escena = []
-
+            
             # Mezclamos para que el orden sea aleatorio cada turno (FCFS justo)
             random.shuffle(entidades_en_escena)
-
+            
             # Tracking de ocupación
             ocupadas_proximas = set()
+
             ocupadas_actuales = set((e["x"], e["y"]) for e in entidades_en_escena)
 
             for estado in entidades_en_escena:
