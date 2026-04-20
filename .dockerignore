@@ -1,0 +1,25 @@
+# Git
+.git
+.gitignore
+
+# Python
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+venv/
+.venv/
+.pytest_cache/
+
+# Entorno y Secretos
+.env
+
+# Proyecto Cliente (Java) - No es necesario para el backend
+proyectoCliente/
+
+# Documentación y IDEs
+.idea/
+.vscode/
+.settings/
+*.md
+LICENSE
