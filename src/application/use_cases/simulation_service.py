@@ -128,13 +128,11 @@ class SimulationService(SimulationUseCase):
             if random.random() < 0.8:
                 for _ in range(10):
                     nx, ny = random.randint(0, ancho - 1), random.randint(0, ancho - 1)
-                    if (nx, ny) not in ocupadas:
+                    # El clon NO puede estar en la misma casilla que el original
+                    # ni en una casilla ya ocupada por otros
+                    if (nx, ny) != (x, y) and (nx, ny) not in ocupadas:
                         posiciones.append((nx, ny))
                         break
-            return tuple(
-                posiciones
-            )  # Aseguramos formato de lista de tuplas al retornar
-            # Corrección: El método original devolvía lista, así que:
             return posiciones
 
         # Fallback para EntidadEstatica o desconocidas
