@@ -48,3 +48,4 @@ El servidor se iniciará por defecto en `http://0.0.0.0:8000`.
 - **[2026-04-20]:** Se habilita el registro de cambios en `GEMINI.md`.
 - **[2026-04-20]:** Intento de ejecución del cliente Java mediante `./mvnw` fallido por falta de `maven-wrapper.properties`. Se recomienda usar `mvn` local o Docker.
 - **[2026-04-20]:** Modificada la lógica de `EntidadMovimientoAdyacente` en `src/domain/entities/models.py` para restringir el movimiento a solo horizontal y vertical (Von Neumann neighborhood), eliminando los desplazamientos diagonales.
+- **[2026-04-20]:** Refactorización arquitectónica: Se ha movido la lógica de movimiento de las entidades desde la capa de **Dominio** (`models.py`) a la capa de **Aplicación** (`simulation_service.py`), siguiendo un modelo de dominio anémico y centralizando la lógica de negocio en los casos de uso.
