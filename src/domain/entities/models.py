@@ -29,10 +29,10 @@ class EntidadEstáticaClon(EntidadEstatica):
 
 
 class DatosSolicitud(BaseModel):
-    nums: Dict[int, int]
+    nums: Dict[int, int] = Field(..., description="Diccionario con pares {id_entidad: cantidad} para la simulación")
 
 
 class DatosSimulation(BaseModel):
-    max_segundos: int = Field(alias="maxSegundos")
-    ancho_tablero: int = Field(alias="anchoTablero")
-    puntos: Dict[int, List[Punto]]
+    max_segundos: int = Field(alias="maxSegundos", description="Duración total de la simulación en segundos")
+    ancho_tablero: int = Field(alias="anchoTablero", description="Ancho del tablero cuadrado (ej. 10 para 10x10)")
+    puntos: Dict[int, List[Punto]] = Field(..., description="Evolución temporal de los puntos {segundo: [Puntos]}")

@@ -4,7 +4,11 @@ from domain.entities.models import Entidad, DatosSolicitud, DatosSimulation
 from application.use_cases.simulation_service import SimulationService
 from infrastructure.adapters.in_memory_repository import InMemorySimulationRepository
 
-app = FastAPI(title="Servidor de Simulación Hexagonal (TT1)")
+app = FastAPI(
+    title="Servidor de Simulación Hexagonal (TT1)",
+    description="Motor de simulación evolutiva de entidades basado en Arquitectura Hexagonal.",
+    version="1.0.0"
+)
 
 # Inyección de dependencias manual
 repository = InMemorySimulationRepository()
