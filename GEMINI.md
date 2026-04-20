@@ -46,6 +46,25 @@ El servidor se iniciará por defecto en `http://0.0.0.0:8000`.
 
 ## 📜 Historial de Cambios
 - **[2026-04-20]:** Se habilita el registro de cambios en `GEMINI.md`.
-- **[2026-04-20]:** Intento de ejecución del cliente Java mediante `./mvnw` fallido por falta de `maven-wrapper.properties`. Se recomienda usar `mvn` local o Docker.
-- **[2026-04-20]:** Modificada la lógica de `EntidadMovimientoAdyacente` en `src/domain/entities/models.py` para restringir el movimiento a solo horizontal y vertical (Von Neumann neighborhood), eliminando los desplazamientos diagonales.
+- **[2026-04-20]:** Modificada la lógica de `EntidadMovimientoAdyacente` para restringir el movimiento a solo horizontal y vertical (Von Neumann).
+- **[2026-04-20]:** **Refactorización Mayor:** La lógica de movimiento y clonación se traslada de las entidades del dominio al `SimulationService` para centralizar la gestión de colisiones y la regla FCFS.
+- **[2026-04-20]:** **Implementación de Tests:** Se añaden 12 tests de integración y unitarios (sin mocks) que validan el estado inicial en t=0, la ausencia de colisiones y la preferencia por orden de llegada.
+- **[2026-04-20]:** **Automatización CI:** Se crea una GitHub Action (`python-tests.yml`) para ejecutar los tests automáticamente en cada push/PR.
+- **[2026-04-20]:** **Documentación:** Se enriquecen los metadatos de FastAPI y los esquemas de Pydantic para una documentación Swagger/ReDoc autodescriptiva.
+
+## 🛠️ Funcionalidad Principal (Detalle Técnico)
+1. **Estado Inicial (t=0):** Se garantiza una distribución aleatoria sin colisiones. El primer segundo de la simulación (`t=0`) representa el estado inicial exacto solicitado, sin movimientos ni clones.
+2. **Evolución (t=1 a t=9):**
+   - **Orden de Turno:** En cada paso, se baraja la lista de entidades (`random.shuffle`) para aplicar una política de FCFS (First-Come, First-Served) justa.
+   - **Gestión de Espacio:** Se utiliza un set de `ocupadas_proximas` para reservar casillas en tiempo real, evitando solapamientos.
+3. **Tipos de Movimiento:**
+   - **Adyacente:** Solo casillas H/V libres.
+   - **Clonación:** 80% de probabilidad, busca casilla libre aleatoria (máximo 10 intentos). El clon nunca pisa al progenitor.
+
+## 🧪 Verificación
+Para ejecutar la suite de pruebas:
+```bash
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+python -m pytest tests/
+```
 - **[2026-04-20]:** Refactorización arquitectónica: Se ha movido la lógica de movimiento de las entidades desde la capa de **Dominio** (`models.py`) a la capa de **Aplicación** (`simulation_service.py`), siguiendo un modelo de dominio anémico y centralizando la lógica de negocio en los casos de uso.
