@@ -7,3 +7,4 @@ uvloop==0.22.1; sys_platform != 'win32'
 watchfiles==1.1.1
 sqlmodel==0.0.22
 pymysql==1.1.1
+cryptography==42.0.5
