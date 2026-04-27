@@ -5,3 +5,5 @@ python-dotenv==1.2.2
 # Esta dependencia es local de Linux, para que uvicorn gestione más eficientemente  las llamadas 
 uvloop==0.22.1; sys_platform != 'win32'
 watchfiles==1.1.1
+sqlmodel==0.0.22
+pymysql==1.1.1
