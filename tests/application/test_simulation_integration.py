@@ -93,10 +93,10 @@ def test_no_overlap_and_fcfs_integration():
         posiciones = [(p.x, p.y) for p in puntos]
         # Verificación de colisiones: cada punto debe tener una coordenada única
         assert len(posiciones) == len(set(posiciones)), f"Colisión detectada en t={t}"
-        # Verificación de límites
+        # Verificación de límites dinámicos
         for p in puntos:
-            assert 0 <= p.x < 10
-            assert 0 <= p.y < 10
+            assert 0 <= p.x < datos.ancho_tablero
+            assert 0 <= p.y < datos.ancho_tablero
 
 def test_logic_entidad_movimiento_adyacente_blocked():
     """Verifica que una entidad móvil se queda quieta si todas las adyacentes están ocupadas."""
@@ -126,13 +126,15 @@ def test_clon_preference_fcfs():
     repo = InMemorySimulationRepository()
     service = SimulationService(repo)
     
-    # 100 es el máximo (10x10). Ponemos 95 estáticas y 5 clonadoras.
+    # Ponemos 95 estáticas y 5 clonadoras.
     solicitud = DatosSolicitud(nums={1: 95, 3: 5})
     ticket = service.solicitar_simulacion(solicitud)
     datos = service.descargar_datos(ticket)
     
+    capacidad_maxima = datos.ancho_tablero * datos.ancho_tablero
+    
     for t, puntos in datos.puntos.items():
-        # Nunca debe exceder 100 puntos (capacidad del tablero)
-        assert len(puntos) <= 100
+        # Nunca debe exceder la capacidad total del tablero
+        assert len(puntos) <= capacidad_maxima
         posiciones = [(p.x, p.y) for p in puntos]
         assert len(posiciones) == len(set(posiciones))
