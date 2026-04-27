@@ -76,5 +76,5 @@ python -m pytest tests/
 - **[2026-04-27]:** **Implementación de Persistencia SQL:** Se ha sustituido el repositorio en memoria por `SQLSimulationRepository` utilizando **SQLModel**.
 - **[2026-04-27]:** **Soporte Multi-DB:** Configurada la infraestructura para soportar SQLite (por defecto) y MySQL mediante variables de entorno (`DATABASE_URL`).
 - **[2026-04-27]:** **Orquestación con Docker Compose:** Creado `docker-compose.yml` para gestionar el ciclo de vida de la aplicación y una base de datos MySQL 8.0, incluyendo healthchecks y volúmenes persistentes.
-- **[2026-04-27]:** **Gestión Visual de BD:** Añadido **Adminer** al stack de Docker para permitir la visualización y gestión de la base de datos vía web en el puerto 8080.
+- **[2026-04-27]:** **Gestión Visual de BD:** Añadido **Adminer** al stack de Docker para permitir la visualización y gestión de la base de datos vía web en el puerto 8081.
 - **[2026-04-27]:** **Robustez de Conexión:** Implementada lógica de reintento en la inicialización de la base de datos para manejar el tiempo de arranque de contenedores DB en entornos Docker.
