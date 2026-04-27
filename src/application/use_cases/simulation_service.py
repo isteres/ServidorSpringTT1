@@ -18,7 +18,18 @@ class SimulationService(SimulationUseCase):
         self.repository = repository
 
     def solicitar_simulacion(self, sol: DatosSolicitud) -> int:
-        ancho = 10
+        # Calculamos el total de entidades solicitadas
+        total_entidades = sum(sol.nums.values())
+        
+        # Ajustamos el ancho proporcionalmente: 
+        # Queremos que la densidad sea baja (10%).
+        # El área debe ser 10 veces el número de entidades.
+        # ancho = raiz_cuadrada(total_entidades * 10)
+        ancho_calculado = int((total_entidades * 10) ** 0.5) + 1
+        
+        # Mantenemos un mínimo de 10 y un máximo de 50 para no saturar el servidor
+        ancho = max(10, min(ancho_calculado, 50))
+        
         max_t = 10
         puntos_por_tiempo: Dict[int, List[Punto]] = {}
 
