@@ -30,5 +30,12 @@ services:
       db:
         condition: service_healthy
 
+  adminer:
+    image: adminer
+    container_name: sim_adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
 volumes:
   mysql_data:

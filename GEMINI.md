@@ -73,3 +73,8 @@ python -m pytest tests/
 - **[2026-04-20]:** Actualizado `requirements.txt` con versiones concretas de las librerías (`fastapi==0.135.3`, `uvicorn[standard]==0.44.0`, `pydantic==2.13.0`, etc.) para asegurar la reproducibilidad del entorno.
 - **[2026-04-20]:** Creado un `Dockerfile` optimizado para el backend utilizando **`uv`** como gestor de paquetes para mejorar la velocidad de construcción y la eficiencia de la imagen Docker.
 - **[2026-04-20]:** Implementado un archivo `.dockerignore` para optimizar el contexto de construcción de Docker, excluyendo entornos virtuales, código del cliente y metadatos innecesarios.
+- **[2026-04-27]:** **Implementación de Persistencia SQL:** Se ha sustituido el repositorio en memoria por `SQLSimulationRepository` utilizando **SQLModel**.
+- **[2026-04-27]:** **Soporte Multi-DB:** Configurada la infraestructura para soportar SQLite (por defecto) y MySQL mediante variables de entorno (`DATABASE_URL`).
+- **[2026-04-27]:** **Orquestación con Docker Compose:** Creado `docker-compose.yml` para gestionar el ciclo de vida de la aplicación y una base de datos MySQL 8.0, incluyendo healthchecks y volúmenes persistentes.
+- **[2026-04-27]:** **Gestión Visual de BD:** Añadido **Adminer** al stack de Docker para permitir la visualización y gestión de la base de datos vía web en el puerto 8080.
+- **[2026-04-27]:** **Robustez de Conexión:** Implementada lógica de reintento en la inicialización de la base de datos para manejar el tiempo de arranque de contenedores DB en entornos Docker.
