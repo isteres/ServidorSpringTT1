@@ -15,9 +15,22 @@ engine = create_engine(
     connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {}
 )
 
+import time
+from sqlalchemy.exc import OperationalError
+
 def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
-    seed_data()
+    # Reintentar conexión para dar tiempo a que MySQL levante en Docker
+    max_retries = 5
+    for i in range(max_retries):
+        try:
+            SQLModel.metadata.create_all(engine)
+            seed_data()
+            break
+        except OperationalError:
+            if i == max_retries - 1:
+                raise
+            print(f"Base de datos no lista, reintentando en 5s... ({i+1}/{max_retries})")
+            time.sleep(5)
 
 def seed_data():
     from infrastructure.adapters.sql_models import EntityTable

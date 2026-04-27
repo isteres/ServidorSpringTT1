@@ -1,0 +1,34 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: sim_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: simulation_db
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: sim_user
+      MYSQL_PASSWORD: sim_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: sim_app
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mysql+pymysql://sim_user:sim_password@db:3306/simulation_db
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
