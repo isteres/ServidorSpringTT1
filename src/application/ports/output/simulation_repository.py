@@ -4,11 +4,11 @@ from domain.entities.models import Entidad, DatosSimulation
 
 class SimulationRepository(ABC):
     @abstractmethod
-    def save_simulation(self, ticket: int, result: DatosSimulation) -> int:
+    def save_simulation(self, ticket: str, result: DatosSimulation) -> str:
         pass
 
     @abstractmethod
-    def get_simulation(self, ticket: int) -> Optional[DatosSimulation]:
+    def get_simulation(self, ticket: str) -> Optional[DatosSimulation]:
         pass
 
     @abstractmethod

@@ -4,11 +4,11 @@ from domain.entities.models import Entidad, DatosSolicitud, DatosSimulation
 
 class SimulationUseCase(ABC):
     @abstractmethod
-    def solicitar_simulacion(self, sol: DatosSolicitud) -> int:
+    def solicitar_simulacion(self, sol: DatosSolicitud) -> str:
         pass
 
     @abstractmethod
-    def descargar_datos(self, ticket: int) -> Optional[DatosSimulation]:
+    def descargar_datos(self, ticket: str) -> Optional[DatosSimulation]:
         pass
 
     @abstractmethod

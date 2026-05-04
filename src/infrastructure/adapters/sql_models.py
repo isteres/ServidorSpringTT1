@@ -12,7 +12,7 @@ class EntityTable(SQLModel, table=True):
 
 class SimulationTable(SQLModel, table=True):
     __tablename__ = "simulations"
-    ticket: int = Field(primary_key=True)
+    ticket: str = Field(primary_key=True)
     max_segundos: int = Field()
     ancho_tablero: int = Field()
     # Almacenamos el diccionario de puntos como JSON

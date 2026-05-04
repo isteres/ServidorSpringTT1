@@ -21,7 +21,7 @@ def get_service(session: Session = Depends(get_session)):
     return SimulationService(repository)
 
 
-@app.post("/simulation/solicitar", response_model=int)
+@app.post("/simulation/solicitar", response_model=str)
 def solicitar_simulacion(
     sol: DatosSolicitud, 
     service: SimulationService = Depends(get_service)
@@ -38,7 +38,7 @@ def solicitar_simulacion(
     response_model_by_alias=True,
 )
 def descargar_datos(
-    ticket: int = Path(..., description="Ticket de simulación"),
+    ticket: str = Path(..., description="Ticket de simulación"),
     service: SimulationService = Depends(get_service)
 ):
     data = service.descargar_datos(ticket)

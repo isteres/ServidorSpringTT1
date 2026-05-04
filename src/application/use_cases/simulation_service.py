@@ -1,4 +1,5 @@
 import random
+import string
 from typing import List, Optional, Dict, Set, Tuple
 from application.ports.input.simulation_use_case import SimulationUseCase
 from application.ports.output.simulation_repository import SimulationRepository
@@ -17,7 +18,7 @@ class SimulationService(SimulationUseCase):
     def __init__(self, repository: SimulationRepository):
         self.repository = repository
 
-    def solicitar_simulacion(self, sol: DatosSolicitud) -> int:
+    def solicitar_simulacion(self, sol: DatosSolicitud) -> str:
         # Calculamos el total de entidades solicitadas
         total_entidades = sum(sol.nums.values())
         
@@ -107,7 +108,7 @@ class SimulationService(SimulationUseCase):
             puntos_por_tiempo[t] = lista_puntos_actuales
             entidades_en_escena = nuevas_entidades_en_escena
 
-        ticket = random.randint(1000, 9999)
+        ticket = "".join(random.choices(string.ascii_letters + string.digits, k=24))
         resultado = DatosSimulation(
             maxSegundos=max_t, anchoTablero=ancho, puntos=puntos_por_tiempo
         )
@@ -152,7 +153,7 @@ class SimulationService(SimulationUseCase):
         # Fallback para EntidadEstatica o desconocidas
         return [(x, y)]
 
-    def descargar_datos(self, ticket: int) -> Optional[DatosSimulation]:
+    def descargar_datos(self, ticket: str) -> Optional[DatosSimulation]:
         return self.repository.get_simulation(ticket)
 
     def get_entities(self) -> List[Entidad]:
