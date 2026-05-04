@@ -36,3 +36,11 @@ class DatosSimulation(BaseModel):
     max_segundos: int = Field(alias="maxSegundos", description="Duración total de la simulación en segundos")
     ancho_tablero: int = Field(alias="anchoTablero", description="Ancho del tablero cuadrado (ej. 10 para 10x10)")
     puntos: Dict[int, List[Punto]] = Field(..., description="Evolución temporal de los puntos {segundo: [Puntos]}")
+
+
+class User(BaseModel):
+    id: Optional[int] = None
+    username: str
+    email: str
+    full_name: Optional[str] = None
+    disabled: Optional[bool] = None

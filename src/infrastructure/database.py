@@ -19,6 +19,7 @@ import time
 from sqlalchemy.exc import OperationalError
 
 def create_db_and_tables():
+    from infrastructure.adapters.sql_models import EntityTable, SimulationTable, UserTable
     # Reintentar conexión para dar tiempo a que MySQL levante en Docker
     max_retries = 5
     for i in range(max_retries):

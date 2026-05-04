@@ -17,3 +17,12 @@ class SimulationTable(SQLModel, table=True):
     ancho_tablero: int = Field()
     # Almacenamos el diccionario de puntos como JSON
     puntos: Dict[str, List[dict]] = Field(default_factory=dict, sa_column=Column(JSON))
+
+class UserTable(SQLModel, table=True):
+    __tablename__ = "users"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    username: str = Field(index=True, unique=True)
+    email: str = Field(index=True, unique=True)
+    full_name: Optional[str] = Field(default=None)
+    hashed_password: str = Field()
+    disabled: Optional[bool] = Field(default=False)
