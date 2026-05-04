@@ -17,6 +17,9 @@ class SimulationTable(SQLModel, table=True):
     ancho_tablero: int = Field()
     # Almacenamos el diccionario de puntos como JSON
     puntos: Dict[str, List[dict]] = Field(default_factory=dict, sa_column=Column(JSON))
+    
+    # Clave foránea al usuario (nula por ahora)
+    user_id: Optional[int] = Field(default=None, foreign_key="users.id")
 
 class UserTable(SQLModel, table=True):
     __tablename__ = "users"

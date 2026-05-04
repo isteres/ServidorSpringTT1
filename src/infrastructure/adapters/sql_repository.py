@@ -22,7 +22,8 @@ class SQLSimulationRepository(SimulationRepository):
             ticket=ticket,
             max_segundos=result.max_segundos,
             ancho_tablero=result.ancho_tablero,
-            puntos=puntos_json
+            puntos=puntos_json,
+            user_id=None  # Se deja nulo por ahora como se solicitó
         )
         self.session.add(db_sim)
         self.session.commit()
