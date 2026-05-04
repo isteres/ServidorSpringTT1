@@ -59,7 +59,7 @@ El servidor se iniciará por defecto en `http://0.0.0.0:8000`.
    - **Gestión de Espacio:** Se utiliza un set de `ocupadas_proximas` para reservar casillas en tiempo real, evitando solapamientos.
 3. **Tipos de Movimiento:**
    - **Adyacente:** Solo casillas H/V libres.
-   - **Clonación:** 80% de probabilidad, busca casilla libre aleatoria (máximo 10 intentos). El clon nunca pisa al progenitor.
+   - **Clonación:** 80% de probabilidad, busca una casilla adyacente libre (H/V). El clon nunca pisa al progenitor.
 
 ## 🧪 Verificación
 Para ejecutar la suite de pruebas:
@@ -78,3 +78,5 @@ python -m pytest tests/
 - **[2026-04-27]:** **Orquestación con Docker Compose:** Creado `docker-compose.yml` para gestionar el ciclo de vida de la aplicación y una base de datos MySQL 8.0, incluyendo healthchecks y volúmenes persistentes.
 - **[2026-04-27]:** **Gestión Visual de BD:** Añadido **Adminer** al stack de Docker para permitir la visualización y gestión de la base de datos vía web en el puerto 8081.
 - **[2026-04-27]:** **Robustez de Conexión:** Implementada lógica de reintento en la inicialización de la base de datos para manejar el tiempo de arranque de contenedores DB en entornos Docker.
+- **[2026-05-04]:** **Clonación Adyacente:** Se ha restringido la lógica de las entidades clonadoras para que solo generen clones en casillas adyacentes (H/V), unificando el comportamiento con el movimiento adyacente.
+- **[2026-05-04]:** **Tabla de Usuarios:** Añadida tabla `users` y relación de clave foránea en `simulations` para anticipar futuras funcionalidades de gestión de clientes.

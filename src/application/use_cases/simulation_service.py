@@ -138,13 +138,15 @@ class SimulationService(SimulationUseCase):
         elif isinstance(entidad, EntidadEstáticaClon):
             posiciones = [(x, y)]
             if random.random() < 0.8:
-                for _ in range(10):
-                    nx, ny = random.randint(0, ancho - 1), random.randint(0, ancho - 1)
-                    # El clon NO puede estar en la misma casilla que el original
-                    # ni en una casilla ya ocupada por otros
-                    if (nx, ny) != (x, y) and (nx, ny) not in ocupadas:
-                        posiciones.append((nx, ny))
-                        break
+                # Buscar adyacente libre H/V (Von Neumann)
+                direcciones = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+                random.shuffle(direcciones)
+                for dx, dy in direcciones:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < ancho and 0 <= ny < ancho:
+                        if (nx, ny) not in ocupadas:
+                            posiciones.append((nx, ny))
+                            break
             return posiciones
 
         # Fallback para EntidadEstatica o desconocidas
