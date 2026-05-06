@@ -10,7 +10,7 @@ class SQLSimulationRepository(SimulationRepository):
     def __init__(self, session: Session):
         self.session = session
 
-    def save_simulation(self, ticket: str, result: DatosSimulation) -> str:
+    def save_simulation(self, ticket: int, result: DatosSimulation) -> int:
         # Convertimos DatosSimulation a SimulationTable
         # result.puntos es Dict[int, List[Punto]], lo convertimos a Dict[int, List[dict]]
         puntos_json = {
@@ -29,7 +29,7 @@ class SQLSimulationRepository(SimulationRepository):
         self.session.commit()
         return ticket
 
-    def get_simulation(self, ticket: str) -> Optional[DatosSimulation]:
+    def get_simulation(self, ticket: int) -> Optional[DatosSimulation]:
         statement = select(SimulationTable).where(SimulationTable.ticket == ticket)
         db_sim = self.session.exec(statement).first()
         if not db_sim:

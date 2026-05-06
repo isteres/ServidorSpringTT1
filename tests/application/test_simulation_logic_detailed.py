@@ -132,3 +132,13 @@ def test_entity_colors(service):
     assert "#33FF57" in colores # ID 2
     assert "#3357FF" in colores # ID 3
 
+def test_ticket_format_is_4_digits_numeric(service):
+    """
+    Verifica que el ticket generado tenga exactamente 4 dígitos y sea un entero.
+    """
+    solicitud = DatosSolicitud(nums={1: 1})
+    ticket = service.solicitar_simulacion(solicitud)
+    
+    assert isinstance(ticket, int)
+    assert 1000 <= ticket <= 9999
+

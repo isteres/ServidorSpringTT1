@@ -17,7 +17,7 @@ def mock_repo():
     repo = MagicMock()
     # Mock de entidades existentes (IDs 1, 2)
     repo.get_entity.side_effect = lambda eid: EntidadEstatica(id=eid, name="Test", descripcion="Desc") if eid in [1, 2] else None
-    repo.save_simulation.return_value = "ABC123XYZ456789012345678"
+    repo.save_simulation.return_value = 1234
     return repo
 
 def test_solicitar_simulacion_generates_points(mock_repo):
@@ -27,8 +27,8 @@ def test_solicitar_simulacion_generates_points(mock_repo):
     
     ticket = service.solicitar_simulacion(solicitud)
     
-    assert isinstance(ticket, str)
-    assert len(ticket) == 24
+    assert isinstance(ticket, int)
+    assert 1000 <= ticket <= 9999
     # Verificamos que se guardó una simulación
     args, _ = mock_repo.save_simulation.call_args
     simulacion = args[1]

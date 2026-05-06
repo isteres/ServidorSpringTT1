@@ -111,7 +111,8 @@ class SimulationService(SimulationUseCase):
             puntos_por_tiempo[t] = lista_puntos_actuales
             entidades_en_escena = nuevas_entidades_en_escena
 
-        ticket = "".join(random.choices(string.ascii_letters + string.digits, k=24))
+        # Generar un ticket de 4 dígitos numéricos únicamente como entero
+        ticket = random.randint(1000, 9999)
         resultado = DatosSimulation(
             maxSegundos=max_t, anchoTablero=ancho, puntos=puntos_por_tiempo
         )
@@ -156,7 +157,7 @@ class SimulationService(SimulationUseCase):
         # Fallback para EntidadEstatica o desconocidas
         return [(x, y)]
 
-    def descargar_datos(self, ticket: str) -> Optional[DatosSimulation]:
+    def descargar_datos(self, ticket: int) -> Optional[DatosSimulation]:
         return self.repository.get_simulation(ticket)
 
     def get_entities(self) -> List[Entidad]:
