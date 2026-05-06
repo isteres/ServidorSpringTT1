@@ -31,9 +31,18 @@ class SimulationService(SimulationUseCase):
         # Mantenemos un mínimo de 10 y un máximo de 50 para no saturar el servidor
         ancho = max(10, min(ancho_calculado, 50))
         
-        # El tiempo de simulación escala con el número de entidades:
-        # 1 paso por cada 5 entidades, con un mínimo de 10 y máximo de 30.
-        max_t = max(10, min(total_entidades // 5, 30))
+        # El tiempo de simulación escala con el tamaño del tablero y el número de entidades.
+        # - base_t: Proporcional al ancho para permitir desplazamiento significativo.
+        # - entity_bonus: Un pequeño incremento por cada 10 entidades.
+        # - cloner_bonus: Si hay entidades que se clonan (ID 3), extendemos el tiempo para ver la expansión.
+        base_t = ancho * 0.8
+        entity_bonus = total_entidades // 10
+        cloner_bonus = 5 if sol.nums.get(3, 0) > 0 else 0
+        
+        max_t_calculado = int(base_t + entity_bonus + cloner_bonus)
+        
+        # Ampliamos el rango: mínimo 10 y máximo 60 para simulaciones más ricas
+        max_t = max(10, min(max_t_calculado, 60))
         
         puntos_por_tiempo: Dict[int, List[Punto]] = {}
 
