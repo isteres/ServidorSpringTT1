@@ -28,7 +28,7 @@ def session_fixture():
 def test_save_and_get_simulation(session):
     # Preparar datos
     repository = SQLSimulationRepository(session)
-    ticket = "TEST_TICKET_123"
+    ticket = 12345
     puntos = {
         0: [Punto(x=1, y=1, color="#FFFFFF"), Punto(x=2, y=2, color="#000000")],
         1: [Punto(x=1, y=2, color="#FFFFFF"), Punto(x=2, y=3, color="#000000")]
@@ -55,7 +55,7 @@ def test_save_and_get_simulation(session):
 
 def test_get_simulation_not_found(session):
     repository = SQLSimulationRepository(session)
-    retrieved_sim = repository.get_simulation("NON_EXISTENT")
+    retrieved_sim = repository.get_simulation(99999)
     assert retrieved_sim is None
 
 def test_get_entities(session):

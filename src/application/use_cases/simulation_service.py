@@ -1,5 +1,6 @@
 import random
 import string
+import math
 from typing import List, Optional, Dict, Set, Tuple
 from application.ports.input.simulation_use_case import SimulationUseCase
 from application.ports.output.simulation_repository import SimulationRepository
@@ -32,14 +33,34 @@ class SimulationService(SimulationUseCase):
         ancho = max(10, min(ancho_calculado, 50))
         
         # El tiempo de simulación escala con el tamaño del tablero y el número de entidades.
-        # - base_t: Proporcional al ancho para permitir desplazamiento significativo.
-        # - entity_bonus: Un pequeño incremento por cada 10 entidades.
-        # - cloner_bonus: Si hay entidades que se clonan (ID 3), extendemos el tiempo para ver la expansión.
+        # Pero si hay clonadores, el tablero se llena exponencialmente y debemos predecir la saturación.
+        
         base_t = ancho * 0.8
         entity_bonus = total_entidades // 10
-        cloner_bonus = 5 if sol.nums.get(3, 0) > 0 else 0
+        num_clonadores = sol.nums.get(3, 0)
         
-        max_t_calculado = int(base_t + entity_bonus + cloner_bonus)
+        # Lógica para clonadores: si el tablero se llena rápido, acortamos el tiempo
+        if num_clonadores > 0:
+            # Estimamos el crecimiento: P(t+1) = P(t) * (1 + prob_clon * ratio_clonadores)
+            ratio_clonadores = num_clonadores / total_entidades
+            crecimiento_por_paso = 1 + (0.8 * ratio_clonadores)
+            
+            # Queremos saber cuándo llegamos al 75% de ocupación (punto de estancamiento)
+            limite_poblacion = 0.75 * (ancho ** 2)
+            
+            if limite_poblacion > total_entidades:
+                # n * crecimiento^t = limite -> t = log(limite/total) / log(crecimiento)
+                pasos_hasta_saturacion = math.log(limite_poblacion / total_entidades) / math.log(crecimiento_por_paso)
+                # Duración sugerida: tiempo hasta saturación + margen de observación
+                max_t_sugerido = int(pasos_hasta_saturacion + 5)
+                # Usamos el mínimo entre el cálculo base y el tiempo de saturación
+                max_t_calculado = min(int(base_t + entity_bonus + 5), max_t_sugerido)
+            else:
+                # Tablero ya muy lleno desde el inicio
+                max_t_calculado = 10
+        else:
+            # Sin clonadores, usamos la lógica lineal estándar
+            max_t_calculado = int(base_t + entity_bonus)
         
         # Ampliamos el rango: mínimo 10 y máximo 60 para simulaciones más ricas
         max_t = max(10, min(max_t_calculado, 60))
