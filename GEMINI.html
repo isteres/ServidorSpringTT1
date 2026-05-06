@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contexto del Proyecto: Servidor de Simulación Hexagonal (TT1) &mdash; Servidor de Simulación Evolutiva 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Servidor de Simulación Hexagonal (TT1)" href="README.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Servidor de Simulación Evolutiva
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenidos:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">Servidor de Simulación Hexagonal (TT1)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contexto del Proyecto: Servidor de Simulación Hexagonal (TT1)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tecnologias-y-frameworks">🚀 Tecnologías y Frameworks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#estructura-del-proyecto">🏗️ Estructura del Proyecto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#funcionalidad-principal">🛠️ Funcionalidad Principal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#endpoints-de-la-api">📍 Endpoints de la API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pruebas">🧪 Pruebas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#como-ejecutar">🏃 Cómo ejecutar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#historial-de-cambios">📜 Historial de Cambios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#funcionalidad-principal-detalle-tecnico">🛠️ Funcionalidad Principal (Detalle Técnico)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#verificacion">🧪 Verificación</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Servidor de Simulación Evolutiva</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Contexto del Proyecto: Servidor de Simulación Hexagonal (TT1)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/GEMINI.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="contexto-del-proyecto-servidor-de-simulacion-hexagonal-tt1">
+<h1>Contexto del Proyecto: Servidor de Simulación Hexagonal (TT1)<a class="headerlink" href="#contexto-del-proyecto-servidor-de-simulacion-hexagonal-tt1" title="Link to this heading"></a></h1>
+<p>Este archivo proporciona una visión general del proyecto para facilitar la comprensión y el desarrollo.</p>
+<section id="tecnologias-y-frameworks">
+<h2>🚀 Tecnologías y Frameworks<a class="headerlink" href="#tecnologias-y-frameworks" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Lenguaje:</strong> Python 3.x</p></li>
+<li><p><strong>Framework Web:</strong> FastAPI</p></li>
+<li><p><strong>Servidor ASGI:</strong> Uvicorn</p></li>
+<li><p><strong>Validación de Datos:</strong> Pydantic</p></li>
+<li><p><strong>Arquitectura:</strong> Hexagonal (Puertos y Adaptadores)</p></li>
+</ul>
+</section>
+<section id="estructura-del-proyecto">
+<h2>🏗️ Estructura del Proyecto<a class="headerlink" href="#estructura-del-proyecto" title="Link to this heading"></a></h2>
+<p>El proyecto sigue una arquitectura limpia dividida en capas:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">src/domain/</span></code></strong>: Núcleo del negocio. Contiene las entidades (<code class="docutils literal notranslate"><span class="pre">models.py</span></code>) y lógica pura.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Entidad</span></code>: Clase base abstracta para diferentes tipos de entidades (Estática, MovimientoAdyacente, EstáticaClon).</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">src/application/</span></code></strong>: Casos de uso y puertos.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ports/</span></code>: Interfaces (Abstract Base Classes) para entrada (use cases) y salida (repositories).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">use_cases/</span></code>: Implementación de la lógica de aplicación (<code class="docutils literal notranslate"><span class="pre">SimulationService</span></code>).</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">src/infrastructure/</span></code></strong>: Detalles de implementación.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">adapters/</span></code>: Implementaciones concretas de los puertos de salida (ej. <code class="docutils literal notranslate"><span class="pre">InMemorySimulationRepository</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">web/</span></code>: Punto de entrada de la API, controladores y rutas de FastAPI.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">src/main.py</span></code></strong>: Script de inicio del servidor.</p></li>
+</ul>
+</section>
+<section id="funcionalidad-principal">
+<h2>🛠️ Funcionalidad Principal<a class="headerlink" href="#funcionalidad-principal" title="Link to this heading"></a></h2>
+<p>El servidor gestiona simulaciones de entidades en un tablero bidimensional:</p>
+<ol class="arabic simple">
+<li><p>Se solicita una simulación enviando un diccionario de IDs de entidades y cantidades.</p></li>
+<li><p>El <code class="docutils literal notranslate"><span class="pre">SimulationService</span></code> genera una evolución temporal con una duración dinámica (entre 10 y 30 pasos) según la cantidad de entidades.</p></li>
+<li><p>Las entidades tienen comportamientos específicos definidos en sus clases (mover, clonar).</p></li>
+<li><p>El resultado se guarda y se puede recuperar mediante un <code class="docutils literal notranslate"><span class="pre">ticket</span></code> numérico.</p></li>
+</ol>
+</section>
+<section id="endpoints-de-la-api">
+<h2>📍 Endpoints de la API<a class="headerlink" href="#endpoints-de-la-api" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/simulation/solicitar</span></code>: Inicia una nueva simulación.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/simulation/descargar/{ticket}</span></code>: Obtiene los resultados de una simulación.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/entities</span></code>: Lista todas las entidades disponibles.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/entities/validate/{entity_id}</span></code>: Verifica si un ID de entidad es válido.</p></li>
+</ul>
+</section>
+<section id="pruebas">
+<h2>🧪 Pruebas<a class="headerlink" href="#pruebas" title="Link to this heading"></a></h2>
+<p>Las pruebas se encuentran en el directorio <code class="docutils literal notranslate"><span class="pre">tests/</span></code> y cubren tanto la lógica de aplicación como los endpoints de la API.</p>
+</section>
+<section id="como-ejecutar">
+<h2>🏃 Cómo ejecutar<a class="headerlink" href="#como-ejecutar" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>src/main.py
+</pre></div>
+</div>
+<p>El servidor se iniciará por defecto en <code class="docutils literal notranslate"><span class="pre">http://0.0.0.0:8000</span></code>.</p>
+</section>
+<section id="historial-de-cambios">
+<h2>📜 Historial de Cambios<a class="headerlink" href="#historial-de-cambios" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>[2026-04-20]:</strong> Se habilita el registro de cambios en <code class="docutils literal notranslate"><span class="pre">GEMINI.md</span></code>.</p></li>
+<li><p><strong>[2026-04-20]:</strong> Modificada la lógica de <code class="docutils literal notranslate"><span class="pre">EntidadMovimientoAdyacente</span></code> para restringir el movimiento a solo horizontal y vertical (Von Neumann).</p></li>
+<li><p><strong>[2026-04-20]:</strong> <strong>Refactorización Mayor:</strong> La lógica de movimiento y clonación se traslada de las entidades del dominio al <code class="docutils literal notranslate"><span class="pre">SimulationService</span></code> para centralizar la gestión de colisiones y la regla FCFS.</p></li>
+<li><p><strong>[2026-04-20]:</strong> <strong>Implementación de Tests:</strong> Se añaden 12 tests de integración y unitarios (sin mocks) que validan el estado inicial en t=0, la ausencia de colisiones y la preferencia por orden de llegada.</p></li>
+<li><p><strong>[2026-04-20]:</strong> <strong>Automatización CI:</strong> Se crea una GitHub Action (<code class="docutils literal notranslate"><span class="pre">python-tests.yml</span></code>) para ejecutar los tests automáticamente en cada push/PR.</p></li>
+<li><p><strong>[2026-04-20]:</strong> <strong>Documentación:</strong> Se enriquecen los metadatos de FastAPI y los esquemas de Pydantic para una documentación Swagger/ReDoc autodescriptiva.</p></li>
+</ul>
+</section>
+<section id="funcionalidad-principal-detalle-tecnico">
+<h2>🛠️ Funcionalidad Principal (Detalle Técnico)<a class="headerlink" href="#funcionalidad-principal-detalle-tecnico" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Estado Inicial (t=0):</strong> Se garantiza una distribución aleatoria sin colisiones. El primer segundo de la simulación (<code class="docutils literal notranslate"><span class="pre">t=0</span></code>) representa el estado inicial exacto solicitado, sin movimientos ni clones.</p></li>
+<li><p><strong>Evolución (t=1 a t=9):</strong></p>
+<ul class="simple">
+<li><p><strong>Orden de Turno:</strong> En cada paso, se baraja la lista de entidades (<code class="docutils literal notranslate"><span class="pre">random.shuffle</span></code>) para aplicar una política de FCFS (First-Come, First-Served) justa.</p></li>
+<li><p><strong>Gestión de Espacio:</strong> Se utiliza un set de <code class="docutils literal notranslate"><span class="pre">ocupadas_proximas</span></code> para reservar casillas en tiempo real, evitando solapamientos.</p></li>
+</ul>
+</li>
+<li><p><strong>Tipos de Movimiento:</strong></p>
+<ul class="simple">
+<li><p><strong>Adyacente:</strong> Solo casillas H/V libres.</p></li>
+<li><p><strong>Clonación:</strong> 80% de probabilidad, busca una casilla adyacente libre (H/V). El clon nunca pisa al progenitor.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="verificacion">
+<h2>🧪 Verificación<a class="headerlink" href="#verificacion" title="Link to this heading"></a></h2>
+<p>Para ejecutar la suite de pruebas:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="nv">$PYTHONPATH</span>:<span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/src
+python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>[2026-04-20]:</strong> Refactorización arquitectónica: Se ha movido la lógica de movimiento de las entidades desde la capa de <strong>Dominio</strong> (<code class="docutils literal notranslate"><span class="pre">models.py</span></code>) a la capa de <strong>Aplicación</strong> (<code class="docutils literal notranslate"><span class="pre">simulation_service.py</span></code>), siguiendo un modelo de dominio anémico y centralizando la lógica de negocio en los casos de uso.</p></li>
+<li><p><strong>[2026-04-20]:</strong> Documentado el flujo completo de la simulación: Recepción de solicitud -&gt; Orquestación en <code class="docutils literal notranslate"><span class="pre">SimulationService</span></code> -&gt; Cálculo de movimientos H/V y clonaciones -&gt; Persistencia en Repositorio -&gt; Descarga vía Ticket.</p></li>
+<li><p><strong>[2026-04-20]:</strong> Análisis de concurrencia: Se propone el uso de <code class="docutils literal notranslate"><span class="pre">FastAPI</span> <span class="pre">BackgroundTasks</span></code> para desacoplar la solicitud de la simulación del cálculo intensivo de la misma, permitiendo respuestas asíncronas al cliente.</p></li>
+<li><p><strong>[2026-04-20]:</strong> Actualizado <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> con versiones concretas de las librerías (<code class="docutils literal notranslate"><span class="pre">fastapi==0.135.3</span></code>, <code class="docutils literal notranslate"><span class="pre">uvicorn[standard]==0.44.0</span></code>, <code class="docutils literal notranslate"><span class="pre">pydantic==2.13.0</span></code>, etc.) para asegurar la reproducibilidad del entorno.</p></li>
+<li><p><strong>[2026-04-20]:</strong> Creado un <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> optimizado para el backend utilizando <strong><code class="docutils literal notranslate"><span class="pre">uv</span></code></strong> como gestor de paquetes para mejorar la velocidad de construcción y la eficiencia de la imagen Docker.</p></li>
+<li><p><strong>[2026-04-20]:</strong> Implementado un archivo <code class="docutils literal notranslate"><span class="pre">.dockerignore</span></code> para optimizar el contexto de construcción de Docker, excluyendo entornos virtuales, código del cliente y metadatos innecesarios.</p></li>
+<li><p><strong>[2026-04-27]:</strong> <strong>Implementación de Persistencia SQL:</strong> Se ha sustituido el repositorio en memoria por <code class="docutils literal notranslate"><span class="pre">SQLSimulationRepository</span></code> utilizando <strong>SQLModel</strong>.</p></li>
+<li><p><strong>[2026-04-27]:</strong> <strong>Soporte Multi-DB:</strong> Configurada la infraestructura para soportar SQLite (por defecto) y MySQL mediante variables de entorno (<code class="docutils literal notranslate"><span class="pre">DATABASE_URL</span></code>).</p></li>
+<li><p><strong>[2026-04-27]:</strong> <strong>Orquestación con Docker Compose:</strong> Creado <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> para gestionar el ciclo de vida de la aplicación y una base de datos MySQL 8.0, incluyendo healthchecks y volúmenes persistentes.</p></li>
+<li><p><strong>[2026-04-27]:</strong> <strong>Gestión Visual de BD:</strong> Añadido <strong>Adminer</strong> al stack de Docker para permitir la visualización y gestión de la base de datos vía web en el puerto 8081.</p></li>
+<li><p><strong>[2026-04-27]:</strong> <strong>Robustez de Conexión:</strong> Implementada lógica de reintento en la inicialización de la base de datos para manejar el tiempo de arranque de contenedores DB en entornos Docker.</p></li>
+<li><p><strong>[2026-05-04]:</strong> <strong>Clonación Adyacente:</strong> Se ha restringido la lógica de las entidades clonadoras para que solo generen clones en casillas adyacentes (H/V), unificando el comportamiento con el movimiento adyacente.</p></li>
+<li><p><strong>[2026-05-04]:</strong> <strong>Tabla de Usuarios:</strong> Añadida tabla <code class="docutils literal notranslate"><span class="pre">users</span></code> y relación de clave foránea en <code class="docutils literal notranslate"><span class="pre">simulations</span></code> para anticipar futuras funcionalidades de gestión de clientes.</p></li>
+<li><p><strong>[2026-05-06]:</strong> <strong>Tiempo Dinámico Avanzado:</strong> Se ha refinado la lógica de duración de la simulación. El tiempo (<code class="docutils literal notranslate"><span class="pre">max_t</span></code>) ahora se calcula de forma multivariable: <code class="docutils literal notranslate"><span class="pre">ancho</span> <span class="pre">*</span> <span class="pre">0.8</span> <span class="pre">+</span> <span class="pre">total_entidades/10</span> <span class="pre">+</span> <span class="pre">bono_clonación</span></code>, con un nuevo rango extendido de 10 a 60 segundos para permitir evoluciones más detalladas en tableros grandes o con alta densidad.</p></li>
+<li><p><strong>[2026-05-06]:</strong> <strong>Tests de Persistencia:</strong> Creada suite de tests de integración para la capa de infraestructura (<code class="docutils literal notranslate"><span class="pre">SQLSimulationRepository</span></code>) utilizando una base de datos SQLite en memoria, asegurando el correcto guardado y recuperación de datos JSON.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="README.html" class="btn btn-neutral float-left" title="Servidor de Simulación Hexagonal (TT1)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Manuel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
