@@ -13,10 +13,11 @@ class EntityTable(SQLModel, table=True):
 class SimulationTable(SQLModel, table=True):
     __tablename__ = "simulations"
     ticket: int = Field(primary_key=True)
-    max_segundos: int = Field()
-    ancho_tablero: int = Field()
-    # Almacenamos el diccionario de puntos como JSON
-    puntos: Dict[str, List[dict]] = Field(default_factory=dict, sa_column=Column(JSON))
+    status: str = Field(default="PENDIENTE")  # PENDIENTE, COMPLETADO, ERROR
+    max_segundos: Optional[int] = Field(default=None)
+    ancho_tablero: Optional[int] = Field(default=None)
+    # Almacenamos el diccionario de puntos como JSON, puede ser nulo mientras está pendiente
+    puntos: Optional[Dict[str, List[dict]]] = Field(default=None, sa_column=Column(JSON))
     
     # Clave foránea al usuario (nula por ahora)
     user_id: Optional[int] = Field(default=None, foreign_key="users.id")

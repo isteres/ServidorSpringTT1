@@ -4,6 +4,7 @@ from sqlmodel import Session
 from domain.entities.models import Entidad, DatosSolicitud, DatosSimulation
 from application.use_cases.simulation_service import SimulationService
 from infrastructure.adapters.sql_repository import SQLSimulationRepository
+from infrastructure.adapters.rabbitmq_adapter import RabbitMQAdapter
 from infrastructure.database import create_db_and_tables, get_session
 
 app = FastAPI(
@@ -18,7 +19,8 @@ def on_startup():
 
 def get_service(session: Session = Depends(get_session)):
     repository = SQLSimulationRepository(session)
-    return SimulationService(repository)
+    broker = RabbitMQAdapter()
+    return SimulationService(repository, broker)
 
 
 @app.post("/simulation/solicitar", response_model=int)

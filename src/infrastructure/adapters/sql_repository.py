@@ -10,21 +10,43 @@ class SQLSimulationRepository(SimulationRepository):
     def __init__(self, session: Session):
         self.session = session
 
-    def save_simulation(self, ticket: int, result: DatosSimulation) -> int:
-        # Convertimos DatosSimulation a SimulationTable
-        # result.puntos es Dict[int, List[Punto]], lo convertimos a Dict[int, List[dict]]
+    def save_simulation(self, ticket: int, result: Optional[DatosSimulation]) -> int:
+        # Si no hay resultado, se guarda como PENDIENTE
+        if result is None:
+            db_sim = SimulationTable(
+                ticket=ticket,
+                status="PENDIENTE",
+                user_id=None
+            )
+            self.session.add(db_sim)
+            self.session.commit()
+            return ticket
+
+        # Si hay resultado, se guarda como COMPLETADO o se actualiza
         puntos_json = {
             str(k): [p.model_dump() for p in v] 
             for k, v in result.puntos.items()
         }
         
-        db_sim = SimulationTable(
-            ticket=ticket,
-            max_segundos=result.max_segundos,
-            ancho_tablero=result.ancho_tablero,
-            puntos=puntos_json,
-            user_id=None  # Se deja nulo por ahora como se solicitó
-        )
+        # Intentar buscar si ya existe (para actualización por el worker)
+        statement = select(SimulationTable).where(SimulationTable.ticket == ticket)
+        db_sim = self.session.exec(statement).first()
+        
+        if db_sim:
+            db_sim.status = "COMPLETADO"
+            db_sim.max_segundos = result.max_segundos
+            db_sim.ancho_tablero = result.ancho_tablero
+            db_sim.puntos = puntos_json
+        else:
+            db_sim = SimulationTable(
+                ticket=ticket,
+                status="COMPLETADO",
+                max_segundos=result.max_segundos,
+                ancho_tablero=result.ancho_tablero,
+                puntos=puntos_json,
+                user_id=None
+            )
+        
         self.session.add(db_sim)
         self.session.commit()
         return ticket
@@ -32,7 +54,7 @@ class SQLSimulationRepository(SimulationRepository):
     def get_simulation(self, ticket: int) -> Optional[DatosSimulation]:
         statement = select(SimulationTable).where(SimulationTable.ticket == ticket)
         db_sim = self.session.exec(statement).first()
-        if not db_sim:
+        if not db_sim or db_sim.status != "COMPLETADO":
             return None
         
         # Reconstruimos DatosSimulation

@@ -18,16 +18,17 @@ El proyecto sigue una arquitectura limpia dividida en capas:
   - `ports/`: Interfaces (Abstract Base Classes) para entrada (use cases) y salida (repositories).
   - `use_cases/`: Implementación de la lógica de aplicación (`SimulationService`).
 - **`src/infrastructure/`**: Detalles de implementación.
-  - `adapters/`: Implementaciones concretas de los puertos de salida (ej. `InMemorySimulationRepository`).
+  - `adapters/`: Implementaciones concretas de los puertos de salida (ej. `InMemorySimulationRepository`, `RabbitMQAdapter`).
   - `web/`: Punto de entrada de la API, controladores y rutas de FastAPI.
-- **`src/main.py`**: Script de inicio del servidor.
+- **`src/worker.py`**: Consumidor de RabbitMQ que procesa las simulaciones asíncronas.
+- **`src/main.py`**: Script de inicio del servidor API.
 
 ## 🛠️ Funcionalidad Principal
 El servidor gestiona simulaciones de entidades en un tablero bidimensional:
-1. Se solicita una simulación enviando un diccionario de IDs de entidades y cantidades.
-2. El `SimulationService` genera una evolución temporal con una duración dinámica (entre 10 y 30 pasos) según la cantidad de entidades.
-3. Las entidades tienen comportamientos específicos definidos en sus clases (mover, clonar).
-4. El resultado se guarda y se puede recuperar mediante un `ticket` numérico.
+1. Se solicita una simulación. El sistema responde con un `ticket` y encola la tarea en **RabbitMQ**.
+2. Un `worker` procesa la simulación de forma asíncrona.
+3. El resultado se guarda en la base de datos SQL y se puede recuperar mediante el `ticket`.
+
 
 ## 📍 Endpoints de la API
 - `POST /simulation/solicitar`: Inicia una nueva simulación.
@@ -82,3 +83,14 @@ python -m pytest tests/
 - **[2026-05-04]:** **Tabla de Usuarios:** Añadida tabla `users` y relación de clave foránea en `simulations` para anticipar futuras funcionalidades de gestión de clientes.
 - **[2026-05-06]:** **Tiempo Dinámico Avanzado:** Se ha refinado la lógica de duración de la simulación. El tiempo (`max_t`) ahora se calcula de forma multivariable: `ancho * 0.8 + total_entidades/10 + bono_clonación`, con un nuevo rango extendido de 10 a 60 segundos para permitir evoluciones más detalladas en tableros grandes o con alta densidad.
 - **[2026-05-06]:** **Tests de Persistencia:** Creada suite de tests de integración para la capa de infraestructura (`SQLSimulationRepository`) utilizando una base de datos SQLite en memoria, asegurando el correcto guardado y recuperación de datos JSON.
+- **[2026-05-06]:** **Arquitectura Asíncrona con RabbitMQ:** Implementado sistema de procesamiento desacoplado. Las solicitudes de simulación ahora se envían a una cola y son procesadas por un `worker` independiente, mejorando la escalabilidad.
+- **[2026-05-06]:** **Documentación Automática:** Configurada generación de docs con Sphinx y despliegue en GitHub Pages vía Actions nativo.
+
+## 🏗️ Ejecución con RabbitMQ
+Para arrancar el sistema completo incluyendo el broker y el worker:
+```bash
+docker-compose up --build
+```
+- API: `http://localhost:8000`
+- RabbitMQ Management: `http://localhost:15672` (guest/guest)
+- Adminer (DB): `http://localhost:8081`
