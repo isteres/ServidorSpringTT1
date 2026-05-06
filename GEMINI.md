@@ -25,7 +25,7 @@ El proyecto sigue una arquitectura limpia dividida en capas:
 ## 🛠️ Funcionalidad Principal
 El servidor gestiona simulaciones de entidades en un tablero bidimensional:
 1. Se solicita una simulación enviando un diccionario de IDs de entidades y cantidades.
-2. El `SimulationService` genera una evolución temporal de 10 pasos.
+2. El `SimulationService` genera una evolución temporal con una duración dinámica (entre 10 y 30 pasos) según la cantidad de entidades.
 3. Las entidades tienen comportamientos específicos definidos en sus clases (mover, clonar).
 4. El resultado se guarda y se puede recuperar mediante un `ticket` numérico.
 
@@ -80,3 +80,5 @@ python -m pytest tests/
 - **[2026-04-27]:** **Robustez de Conexión:** Implementada lógica de reintento en la inicialización de la base de datos para manejar el tiempo de arranque de contenedores DB en entornos Docker.
 - **[2026-05-04]:** **Clonación Adyacente:** Se ha restringido la lógica de las entidades clonadoras para que solo generen clones en casillas adyacentes (H/V), unificando el comportamiento con el movimiento adyacente.
 - **[2026-05-04]:** **Tabla de Usuarios:** Añadida tabla `users` y relación de clave foránea en `simulations` para anticipar futuras funcionalidades de gestión de clientes.
+- **[2026-05-06]:** **Tiempo Dinámico:** Implementada la duración dinámica de la simulación. El tiempo (`max_t`) ahora se calcula según el número de entidades (1 paso por cada 5 entidades), con un mínimo de 10 y un máximo de 30 segundos.
+- **[2026-05-06]:** **Tests de Persistencia:** Creada suite de tests de integración para la capa de infraestructura (`SQLSimulationRepository`) utilizando una base de datos SQLite en memoria, asegurando el correcto guardado y recuperación de datos JSON.

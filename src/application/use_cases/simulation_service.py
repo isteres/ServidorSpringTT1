@@ -31,7 +31,10 @@ class SimulationService(SimulationUseCase):
         # Mantenemos un mínimo de 10 y un máximo de 50 para no saturar el servidor
         ancho = max(10, min(ancho_calculado, 50))
         
-        max_t = 10
+        # El tiempo de simulación escala con el número de entidades:
+        # 1 paso por cada 5 entidades, con un mínimo de 10 y máximo de 30.
+        max_t = max(10, min(total_entidades // 5, 30))
+        
         puntos_por_tiempo: Dict[int, List[Punto]] = {}
 
         # Estado inicial de la simulación: obtener todas las posiciones posibles y mezclarlas
