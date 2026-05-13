@@ -144,7 +144,7 @@ class SimulationService(SimulationUseCase):
 
         elif isinstance(entidad, EntidadEstáticaClon):
             posiciones = [(x, y)]
-            if random.random() < 0.8:
+            if random.random() < 0.1:
                 # Buscar adyacente libre H/V (Von Neumann)
                 direcciones = [(0, 1), (0, -1), (1, 0), (-1, 0)]
                 random.shuffle(direcciones)
