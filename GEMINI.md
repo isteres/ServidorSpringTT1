@@ -85,6 +85,7 @@ python -m pytest tests/
 - **[2026-05-06]:** **Tests de Persistencia:** Creada suite de tests de integración para la capa de infraestructura (`SQLSimulationRepository`) utilizando una base de datos SQLite en memoria, asegurando el correcto guardado y recuperación de datos JSON.
 - **[2026-05-06]:** **Arquitectura Asíncrona con RabbitMQ:** Implementado sistema de procesamiento desacoplado. Las solicitudes de simulación ahora se envían a una cola y son procesadas por un `worker` independiente, mejorando la escalabilidad.
 - **[2026-05-06]:** **Documentación Automática:** Configurada generación de docs con Sphinx y despliegue en GitHub Pages vía Actions nativo.
+- **[2026-05-13]:** **Licencia:** Añadida licencia MIT al proyecto para definir los términos de uso y distribución.
 
 ## 🏗️ Ejecución con RabbitMQ
 Para arrancar el sistema completo incluyendo el broker y el worker:
