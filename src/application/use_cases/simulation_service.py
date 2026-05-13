@@ -17,7 +17,7 @@ from domain.entities.models import (
 
 
 class SimulationService(SimulationUseCase):
-    PROBABILIDAD_CLONACION = 0.1
+    PROBABILIDAD_CLONACION = 0.25
     """Probabilidad (0.0 a 1.0) de que una EntidadEstáticaClon genere un nuevo clon en cada paso."""
 
     def __init__(self, repository: SimulationRepository, broker: Optional[MessageBrokerPort] = None):
