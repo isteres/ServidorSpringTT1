@@ -30,6 +30,11 @@ class InMemorySimulationRepository(SimulationRepository):
         self.simulations[ticket] = result
         return ticket
 
+    def set_simulation_error(self, ticket: int, error_msg: str):
+        # En memoria simplemente no guardamos el resultado o podríamos marcarlo de alguna forma
+        if ticket in self.simulations:
+            del self.simulations[ticket]
+
     def get_simulation(self, ticket: int) -> Optional[DatosSimulation]:
         return self.simulations.get(ticket)
 

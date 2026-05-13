@@ -31,6 +31,7 @@ def callback(ch, method, properties, body):
             print(f" [v] Simulación {ticket} completada y guardada.")
         except Exception as e:
             print(f" [x] Error procesando simulación {ticket}: {e}")
+            repository.set_simulation_error(ticket, str(e))
 
     ch.basic_ack(delivery_tag=method.delivery_tag)
 

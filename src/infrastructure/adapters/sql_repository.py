@@ -51,6 +51,16 @@ class SQLSimulationRepository(SimulationRepository):
         self.session.commit()
         return ticket
 
+    def set_simulation_error(self, ticket: int, error_msg: str):
+        statement = select(SimulationTable).where(SimulationTable.ticket == ticket)
+        db_sim = self.session.exec(statement).first()
+        if db_sim:
+            db_sim.status = "ERROR"
+            # Podríamos guardar el error_msg en una columna nueva si fuera necesario, 
+            # pero por ahora solo cambiamos el estado.
+            self.session.add(db_sim)
+            self.session.commit()
+
     def get_simulation(self, ticket: int) -> Optional[DatosSimulation]:
         statement = select(SimulationTable).where(SimulationTable.ticket == ticket)
         db_sim = self.session.exec(statement).first()

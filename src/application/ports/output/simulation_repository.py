@@ -8,6 +8,10 @@ class SimulationRepository(ABC):
         pass
 
     @abstractmethod
+    def set_simulation_error(self, ticket: int, error_msg: str):
+        pass
+
+    @abstractmethod
     def get_simulation(self, ticket: int) -> Optional[DatosSimulation]:
         pass
 
