@@ -17,6 +17,9 @@ from domain.entities.models import (
 
 
 class SimulationService(SimulationUseCase):
+    PROBABILIDAD_CLONACION = 0.1
+    """Probabilidad (0.0 a 1.0) de que una EntidadEstáticaClon genere un nuevo clon en cada paso."""
+
     def __init__(self, repository: SimulationRepository, broker: Optional[MessageBrokerPort] = None):
         self.repository = repository
         self.broker = broker
@@ -144,7 +147,7 @@ class SimulationService(SimulationUseCase):
 
         elif isinstance(entidad, EntidadEstáticaClon):
             posiciones = [(x, y)]
-            if random.random() < 0.1:
+            if random.random() < self.PROBABILIDAD_CLONACION:
                 # Buscar adyacente libre H/V (Von Neumann)
                 direcciones = [(0, 1), (0, -1), (1, 0), (-1, 0)]
                 random.shuffle(direcciones)

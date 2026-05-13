@@ -7,6 +7,7 @@ Servidor de Simulación Evolutiva
 
    README
    GEMINI
+   logica
 
 Arquitectura
 ============

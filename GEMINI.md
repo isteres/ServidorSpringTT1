@@ -60,7 +60,7 @@ El servidor se iniciará por defecto en `http://0.0.0.0:8000`.
    - **Gestión de Espacio:** Se utiliza un set de `ocupadas_proximas` para reservar casillas en tiempo real, evitando solapamientos.
 3. **Tipos de Movimiento:**
    - **Adyacente:** Solo casillas H/V libres.
-   - **Clonación:** 80% de probabilidad, busca una casilla adyacente libre (H/V). El clon nunca pisa al progenitor.
+   - **Clonación:** 10% de probabilidad, busca una casilla adyacente libre (H/V). El clon nunca pisa al progenitor.
 
 ## 🧪 Verificación
 Para ejecutar la suite de pruebas:
