@@ -12,15 +12,14 @@ La estructura se divide en capas según el patrón de Puertos y Adaptadores:
 
 *   **Domain**: Define los modelos de datos y las entidades base.
 *   **Application**: Contiene el servicio de simulación y las interfaces (puertos) necesarias para la comunicación entre capas.
-*   **Infrastructure**: Implementa los detalles técnicos, como la API con FastAPI y la persistencia en memoria mediante repositorios.
+*   **Infrastructure**: Implementa los detalles técnicos, como la API con FastAPI, la persistencia en base de datos (SQLModel/MySQL) y la integración con RabbitMQ para el procesamiento asíncrono.
 
-## Lógica de Simulación
+## Lógica de Simulación y Procesamiento
 
-El motor calcula 10 pasos de evolución por cada petición. Se gestionan tres comportamientos distintos:
-
-1.  **Entidad Estática**: No realiza ningún movimiento y mantiene su posición inicial.
-2.  **Movimiento Adyacente**: Se desplaza a casillas contiguas (Norte, Sur, Este u Oeste). No se permiten movimientos diagonales.
-3.  **Entidad Estática Clon**: Se mantiene en su sitio pero tiene una probabilidad del 80% de generar un nuevo clon en una casilla vacía del tablero.
+El sistema gestiona las peticiones de forma desacoplada:
+1.  **API (FastAPI)**: Recibe la solicitud, genera un ticket y encola la tarea en **RabbitMQ**.
+2.  **Worker**: Un proceso independiente consume la cola, ejecuta el motor de simulación y guarda el resultado en la base de datos.
+3.  **Persistencia**: Se utiliza **SQLModel** con soporte para SQLite y MySQL.
 
 ### Gestión de Colisiones (FCFS)
 Para evitar que dos entidades ocupen el mismo lugar, se aplica una lógica de reserva de posiciones:

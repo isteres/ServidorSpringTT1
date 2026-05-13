@@ -46,12 +46,15 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+    volumes:
+      - ./src:/app/src
 
   worker:
     build: .
     container_name: sim_worker
     restart: always
-    command: python src/worker.py
+    # Usamos watchfiles para que el worker también se reinicie solo al cambiar el código
+    command: watchfiles "python src/worker.py" src
     environment:
       - DATABASE_URL=${DATABASE_URL:-mysql+pymysql://user:pass@db:3306/simulation_db}
       - RABBITMQ_HOST=rabbitmq
@@ -60,6 +63,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+    volumes:
+      - ./src:/app/src
 
   adminer:
     image: adminer
