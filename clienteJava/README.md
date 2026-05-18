@@ -1,6 +1,6 @@
 # Interfaz Web (TT1)
 
-Este proyecto es una interfaz web desarrollada con **Spring Boot** para gestionar y visualizar simulaciones en el contexto de un Trabajo de Fin de Grado (TFG). Permite a los usuarios configurar parámetros de simulación, enviar solicitudes a un servicio externo y visualizar los resultados de forma interactiva en una rejilla temporal.
+Este proyecto es una interfaz web desarrollada con **Spring Boot** para gestionar y visualizar simulaciones. Permite a los usuarios configurar parámetros de simulación, enviar solicitudes a un servicio externo y visualizar los resultados de forma interactiva en una rejilla temporal.
 
 ## 🚀 Características
 
