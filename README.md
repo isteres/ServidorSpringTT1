@@ -76,6 +76,17 @@ Para levantar el ecosistema completo:
 docker-compose up --build
 ```
 
+Una vez levantado, puedes acceder a los servicios en las siguientes direcciones:
+
+| Servicio | Dirección URL | Descripción |
+| :--- | :--- | :--- |
+| **Cliente Java** | [http://localhost:8080](http://localhost:8080) | Interfaz de usuario para solicitar y ver simulaciones. |
+| **Backend API** | [http://localhost:8000](http://localhost:8000) | Documentación interactiva de la API en `/docs`. |
+| **RabbitMQ** | [http://localhost:45672](http://localhost:45672) | Panel de gestión (Usuario: `guest` / Pass: `guest`). |
+| **Adminer** | [http://localhost:8081](http://localhost:8081) | Gestor visual de la base de datos MySQL. |
+
+> **Nota:** Si estás accediendo desde otra máquina en la misma red local, sustituye `localhost` por la dirección IP de tu servidor (ej. `http://192.168.1.50:8080`).
+
 ## Endpoints Principales
 
 | Método | Endpoint | Función |
