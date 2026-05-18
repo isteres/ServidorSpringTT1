@@ -12,15 +12,15 @@ La estructura se divide en capas según el patrón de Puertos y Adaptadores:
 
 *   **Domain**: Define los modelos de datos y las entidades base.
 *   **Application**: Contiene el servicio de simulación y las interfaces (puertos) necesarias para la comunicación entre capas.
-*   **Infrastructure**: Implementa los detalles técnicos, como la API con FastAPI y la persistencia en memoria mediante repositorios.
+*   **Infrastructure**: Implementa los detalles técnicos, como la API con FastAPI, la persistencia en base de datos (SQLModel) y el procesamiento asíncrono con RabbitMQ.
 
 ## Lógica de Simulación
 
-El motor calcula 10 pasos de evolución por cada petición. Se gestionan tres comportamientos distintos:
+El motor calcula una evolución temporal dinámica (entre 10 y 60 pasos) por cada petición. Se gestionan tres comportamientos distintos:
 
 1.  **Entidad Estática**: No realiza ningún movimiento y mantiene su posición inicial.
-2.  **Movimiento Adyacente**: Se desplaza a casillas contiguas (Norte, Sur, Este u Oeste). No se permiten movimientos diagonales.
-3.  **Entidad Estática Clon**: Se mantiene en su sitio pero tiene una probabilidad del 80% de generar un nuevo clon en una casilla vacía del tablero.
+2.  **Movimiento Adyacente**: Se desplaza a casillas contiguas (Norte, Sur, Este u Oeste). No se permiten movimientos diagonales (Von Neumann).
+3.  **Entidad Estática Clon**: Se mantiene en su sitio pero tiene una probabilidad del 10% de generar un nuevo clon en una casilla adyacente libre (H/V).
 
 ### Gestión de Colisiones (FCFS)
 Para evitar que dos entidades ocupen el mismo lugar, se aplica una lógica de reserva de posiciones:
@@ -33,8 +33,10 @@ Para evitar que dos entidades ocupen el mismo lugar, se aplica una lógica de re
 *   **Lenguaje**: Python 3.11+
 *   **Framework API**: FastAPI
 *   **Validación**: Pydantic
+*   **Base de Datos**: SQLModel (SQLite/MySQL)
+*   **Broker**: RabbitMQ
 *   **Pruebas**: Pytest
-*   **CI/CD**: GitHub Actions para la ejecución automática de tests.
+*   **CI/CD**: GitHub Actions para la ejecución automática de tests y despliegue de documentación.
 
 ## Instalación y Uso
 
@@ -45,26 +47,17 @@ cd ServidorSpringTT1
 pip install -r requirements.txt
 ```
 
-### Ejecución del servidor
+### Ejecución con Docker (Recomendado)
 ```bash
-python src/main.py
+docker-compose up --build
 ```
-El servidor arrancará en `http://localhost:8000`. Se puede acceder a la documentación interactiva en `/docs`.
-
-## Pruebas de Sistema
-Se han implementado tests de integración para validar la lógica de movimiento y la ausencia de colisiones en escenarios de alta densidad.
-
-Para ejecutar los tests manualmente:
-```bash
-export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-python -m pytest tests/
-```
+Esto arrancará la API, el Worker, la Base de Datos y RabbitMQ.
 
 ## Endpoints Principales
 
 | Método | Endpoint | Función |
 | :--- | :--- | :--- |
-| `POST` | `/simulation/solicitar` | Crea una nueva simulación y devuelve un ticket. |
+| `POST` | `/simulation/solicitar` | Crea una nueva simulación (asíncrona) y devuelve un ticket. |
 | `GET` | `/simulation/descargar/{ticket}` | Obtiene los resultados de la simulación. |
 | `GET` | `/entities` | Lista los tipos de entidades disponibles. |
 | `GET` | `/entities/validate/{id}` | Comprueba si un ID de entidad es válido. |
