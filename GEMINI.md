@@ -85,11 +85,9 @@ python -m pytest tests/
 - **[2026-05-06]:** **Tests de Persistencia:** Creada suite de tests de integración para la capa de infraestructura (`SQLSimulationRepository`) utilizando una base de datos SQLite en memoria, asegurando el correcto guardado y recuperación de datos JSON.
 - **[2026-05-06]:** **Arquitectura Asíncrona con RabbitMQ:** Implementado sistema de procesamiento desacoplado. Las solicitudes de simulación ahora se envían a una cola y son procesadas por un `worker` independiente, mejorando la escalabilidad.
 - **[2026-05-06]:** **Documentación Automática:** Configurada generación de docs con Sphinx y despliegue en GitHub Pages vía Actions nativo.
-<<<<<<< HEAD
-- **[2026-05-13]:** **Licencia:** Añadida licencia MIT al proyecto para definir los términos de uso y distribución.
-=======
-- **[2026-05-13]:** **Robustez del Worker:** Implementado manejo de errores en el worker de RabbitMQ. Si una simulación falla, ahora se marca como `ERROR` en la base de datos en lugar de quedarse perpetuamente como `PENDIENTE`. Se ha extendido el repositorio para soportar estados de error.
->>>>>>> 1bca72681c2e6bc560938a557d56694fac7b55b4
+- **[2026-05-13]:** **Licencia y Robustez:** Se añadió la licencia MIT y se implementó el manejo de errores en el worker para marcar simulaciones como `ERROR`.
+- **[2026-05-18]:** **Corrección de Esquema:** Se solucionó un error 500 al solicitar simulaciones causado por una columna `status` faltante en la base de datos MySQL. Se resetearon las tablas para aplicar el nuevo esquema.
+- **[2026-05-18]:** **Documentación:** Se clarificó el puerto AMQP (`35672`) expuesto para conexiones externas.
 
 ## 🏗️ Ejecución con RabbitMQ
 Para arrancar el sistema completo incluyendo el broker y el worker:
@@ -97,5 +95,6 @@ Para arrancar el sistema completo incluyendo el broker y el worker:
 docker-compose up --build
 ```
 - API: `http://localhost:8000`
-- RabbitMQ Management: `http://localhost:15672` (guest/guest)
+- RabbitMQ Management: `http://localhost:45672` (guest/guest)
+- RabbitMQ AMQP: `localhost:35672` (usar si se conecta desde fuera de Docker)
 - Adminer (DB): `http://localhost:8081`
