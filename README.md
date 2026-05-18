@@ -97,4 +97,3 @@ Una vez levantado, puedes acceder a los servicios en las siguientes direcciones:
 | `GET` | `/entities/validate/{id}` | Comprueba si un ID de entidad es válido. |
 
 ---
-*Proyecto desarrollado para el Trabajo TT1 de Simulación de Sistemas.*
