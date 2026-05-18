@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Solicitud - Simulación</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>Configuración de Simulación</h1>
+        <p>Complete los siguientes parámetros para iniciar una nueva ejecución.</p>
+        
+        <form th:action="@{/solicitud}" method="post">
+            <div th:each="entity : ${entities}" class="form-group">
+                <label th:for="${entity.id}" th:text="'Número de ' + ${entity.name} + ':'"></label>
+                <input type="number" min="0" th:id="${entity.id}" th:name="${entity.id}" required value="0" />
+            </div>
+            <button type="submit">Iniciar Simulación</button>
+        </form>
+    </div>
+</body>
+</html>

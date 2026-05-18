@@ -1,0 +1,21 @@
+services:
+  # El contenedor con nuestra aplicación de spring
+  mi-web-spring:
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - red-tt1
+    depends_on:
+      - servicio-consumible
+
+  # El contenedor con servicio consumible
+  servicio-consumible:
+    image: javillour/servicio-tt1:amd64
+    # No abrimos puertos aquí para que solo se hable con Spring por la red interna
+    networks:
+      - red-tt1
+
+networks:
+  red-tt1:
+    driver: bridge

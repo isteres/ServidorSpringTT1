@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud Enviada - Simulación</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <div th:if="${errors != null}">
+            <h1 style="color: #ef4444;">Ocurrieron Errores</h1>
+            <p>No se pudo procesar la solicitud debido a los siguientes problemas:</p>
+            <ul style="color: #ef4444; list-style: none; padding: 0;">
+                <li th:each="error : ${errors}" th:text="${error}" style="margin-bottom: 0.5rem; background: #fee2e2; padding: 0.5rem; border-radius: 4px;"></li>
+            </ul>
+            <a th:href="@{/solicitud}" class="button-link" style="display: inline-block; margin-top: 1rem; text-decoration: none;">Volver al Formulario</a>
+        </div>
+
+        <div th:if="${errors == null}">
+            <h1>¡Solicitud Realizada!</h1>
+            <p>Su simulación se está procesando. Guarde el siguiente token para descargar los resultados en cuanto estén disponibles:</p>
+            <div class="token-display">
+                <h2 th:text="${token}"></h2>
+            </div>
+            <p>Recibirá un correo electrónico cuando el proceso finalice.</p>
+        </div>
+    </div>
+</body>
+</html>

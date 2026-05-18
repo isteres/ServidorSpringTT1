@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación - Resultados</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container simulation-container">
+    <h1>Resultados de la Simulación</h1>
+    
+    <div class="slider-wrapper">
+        <label for="mySlider" id="sliderValue">Tiempo actual: 0</label>
+        <input type="range" id="mySlider" min="0" th:max="${maxTime - 1}" value="0">
+    </div>
+
+    <div class="grid-viewport">
+        <div class="grid" id="gr"></div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const count = [[${count}]];
+    const colors = [[${colors}]];
+    const slider = document.getElementById("mySlider");
+    const sliderValue = document.getElementById("sliderValue");
+
+    function createSquares(){
+        const grid = document.getElementById('gr');
+        grid.innerHTML = ''; 
+
+        // 32px (size) + 2px (gap)
+        grid.style.gridTemplateColumns = `repeat(${count}, 32px)`;
+
+        for(let y = 0; y < count; y++){
+            for(let x = 0; x < count; x++){
+                const node = document.createElement("div");
+                node.id = y + '-' + x;
+                node.style.background = colors['0-' + y + '-' + x] || '#ffffff';
+                grid.appendChild(node);
+            }
+        }
+    }
+
+    slider.addEventListener("input", function() {
+        const t = slider.value;
+        sliderValue.innerText = "Tiempo actual: " + t;
+
+        for(let y = 0; y < count; y++){
+            for(let x = 0; x < count; x++){
+                const node = document.getElementById(y + '-' + x);
+                if(node) {
+                    node.style.background = colors[t + '-' + y + '-' + x] || '#ffffff';
+                }
+            }
+        }
+    });
+
+    window.onload = createSquares;
+</script>
+</body>
+</html>

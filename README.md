@@ -59,6 +59,23 @@ export PYTHONPATH=$PYTHONPATH:$(pwd)/src
 python -m pytest tests/
 ```
 
+## Gestión de Datos y Entornos
+
+El sistema está diseñado para ser flexible según el entorno de ejecución:
+
+- **Entorno Local (Desarrollo/Pruebas):** Para una ejecución rápida sin dependencias externas, el servidor puede utilizar una base de datos **SQLite** local (`database.db`). Esto permite realizar pruebas unitarias y de integración de forma ligera.
+- **Entorno de Producción (Docker):** Para un despliegue completo y escalable, se utiliza el stack definido en `docker-compose.yml`. Este entorno incluye:
+    - **MySQL 8.0:** Base de datos persistente y robusta.
+    - **RabbitMQ:** Broker de mensajes para el procesamiento asíncrono de tareas.
+    - **Worker Dedicado:** Proceso independiente para el cálculo de simulaciones.
+    - **Cliente Java:** Frontend en Spring Boot integrado en la misma red.
+
+### Ejecución con Docker (Recomendado)
+Para levantar el ecosistema completo:
+```bash
+docker-compose up --build
+```
+
 ## Endpoints Principales
 
 | Método | Endpoint | Función |
